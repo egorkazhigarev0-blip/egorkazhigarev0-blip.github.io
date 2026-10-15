@@ -15,22 +15,34 @@ os.makedirs(TMP, exist_ok=True); os.makedirs(OUT, exist_ok=True)
 def h(s, salt=""):
     return int(hashlib.md5((s + salt).encode()).hexdigest(), 16)
 
+ASSETS2D = os.environ.get("ASSETS2D_DIR", os.path.join(HERE, "assets2d"))
 _cache = {}
 def img(slug):
-    if slug not in _cache:
-        p = os.path.join(ASSETS, slug + ".png")
-        _cache[slug] = "data:image/png;base64," + base64.b64encode(open(p, "rb").read()).decode() if os.path.exists(p) else ""
-    return _cache[slug]
+    """3D-иллюстрация; во втором варианте — плоская 2D-версия того же предмета (другой стиль)."""
+    flat = os.environ.get("VARIANT", "1") == "2"
+    key = (slug, flat)
+    if key not in _cache:
+        p2 = os.path.join(ASSETS2D, slug + ".svg")
+        p3 = os.path.join(ASSETS, slug + ".png")
+        if flat and os.path.exists(p2):
+            _cache[key] = "data:image/svg+xml;base64," + base64.b64encode(open(p2, "rb").read()).decode()
+        elif os.path.exists(p3):
+            _cache[key] = "data:image/png;base64," + base64.b64encode(open(p3, "rb").read()).decode()
+        else:
+            _cache[key] = ""
+    return _cache[key]
 
 def niche_of(l):
-    text = f'{l.get("niche", "")} {l.get("name", "")}'.lower()
-    for key, rx in RULES:
-        if re.search(rx, text): return key
+    for text in (str(l.get("niche", "")).lower(), str(l.get("name", "")).lower()):
+        for key, rx in RULES:
+            if text and re.search(rx, text): return key
     return {"cake": "cake", "bakery": "bakery", "beauty": "salon", "barber": "barber", "repair": "watch"}.get(l.get("cat"), "other")
+
+VARIANT = int(os.environ.get("VARIANT", "1"))  # 2 = второй вариант для повторного касания: другая палитра, заголовок и раскладка
 
 def palette(l, k):
     opts = N[k]["palettes"]
-    return opts[h(l["id"]) % len(opts)]
+    return opts[(h(l["id"]) + VARIANT - 1) % len(opts)]
 
 def services(l, k):
     real = [x for x in (l.get("services") or []) if isinstance(x, (list, tuple)) and len(x) == 3]
@@ -45,29 +57,54 @@ def plural(n, a, b, c):
 def rating_chip(l):
     r, n = l.get("rating"), l.get("reviews")
     if not r or not n or n < 5: return ""
-    return f'<span class="rate"><b>★ {str(r).replace(".", ",")}</b> · {n} {plural(n, "отзыв", "отзыва", "отзывов")} на картах</span>'
+    return f'<span class="rate"><b>★ {float(r):.1f}'.replace(".", ",") + f'</b> · {n} {plural(n, "оценка", "оценки", "оценок")} на картах</span>'
+
+DECOR = {"sparkles", "star", "glowing_star", "paw_prints", "bubbles", "herb", "cherry_blossom", "strawberry", "droplet", "sparkling_heart", "gem_stone", "leafy_green"}
+ANIMALS = {"dog", "poodle", "cat", "dragon"}
+BANNED = {"barber_pole", "baguette_bread", "candle", "hot_dog", "carrot"}  # формы, которые могут выглядеть двусмысленно
 
 def art(keys, ac, ac2, theme, v):
-    """3D-композиция: главный предмет + 3 поменьше, мягкое пятно цвета под ними."""
-    main, a, b, c = (keys + keys)[:4]
+    """Спокойная композиция: один главный предмет в центре на мягком круге, максимум один второстепенный
+    предмет и 1–2 мелких декоративных акцента по углам, без наложений."""
+    main = keys[0]
+    rest = keys[1:]
+    decor = [k for k in rest if k in DECOR][:2] or ["sparkles"]
+    second = next((k for k in rest if k not in DECOR and k not in ANIMALS and k not in BANNED and k != main), None)
     flip = v == 1
-    L = lambda x: f"{100 - x}%" if flip else f"{x}%"
-    side = "right" if flip else "left"
-    blob = f"radial-gradient(closest-side,{ac}33,{ac}00)"
-    blob2 = f"radial-gradient(closest-side,{ac2}2e,{ac2}00)"
-    return f'''<div class="art3d">
-<div class="blob" style="background:{blob};{side}:8%;top:6%"></div><div class="blob b2" style="background:{blob2};{'left' if flip else 'right'}:4%;bottom:2%"></div>
-<img class="o main" src="{img(main)}" style="{side}:22%;top:16%">
-<img class="o s1" src="{img(a)}" style="{'left' if flip else 'right'}:6%;top:8%">
-<img class="o s2" src="{img(b)}" style="{side}:4%;bottom:6%">
-<img class="o s3" src="{img(c)}" style="{'left' if flip else 'right'}:12%;bottom:4%">
-</div>'''
+    A, B = ("left", "right") if not flip else ("right", "left")
+    disc = f"radial-gradient(circle at 35% 30%,{ac}2e,{ac2}1c 60%,{ac}0a)"
+    parts = [f'<div class="disc" style="background:{disc}"></div><div class="ring" style="border-color:{ac}33"></div>',
+             f'<div class="floor"></div><img class="o main" src="{img(main)}">']
+    if second:
+        parts.append(f'<img class="o second" src="{img(second)}" style="{B}:3%;bottom:7%">')
+    parts.append(f'<img class="o d1" src="{img(decor[0])}" style="{B}:9%;top:9%">')
+    if len(decor) > 1 and not second:
+        parts.append(f'<img class="o d2" src="{img(decor[1])}" style="{A}:8%;bottom:12%">')
+    elif len(decor) > 1:
+        parts.append(f'<img class="o d2" src="{img(decor[1])}" style="{A}:9%;top:14%">')
+    return '<div class="art3d">' + "".join(parts) + "</div>"
 
-ART_CSS = """.art3d{position:relative;width:100%;aspect-ratio:1/1;max-width:460px;margin:0 auto}
-.art3d .blob{position:absolute;width:78%;height:78%;border-radius:50%}.art3d .b2{width:55%;height:55%}
-.art3d .o{position:absolute;filter:drop-shadow(0 18px 22px rgba(0,0,0,.22))}
-.art3d .main{width:58%}.art3d .s1{width:26%;transform:rotate(12deg)}.art3d .s2{width:24%;transform:rotate(-10deg)}.art3d .s3{width:20%;transform:rotate(8deg)}
-.ob{display:block;filter:drop-shadow(0 10px 14px rgba(0,0,0,.18))}"""
+ART_CSS = """.art3d{position:relative;width:100%;aspect-ratio:1/1;max-width:440px;margin:0 auto}
+.art3d .disc{position:absolute;inset:9%;border-radius:50%}
+.art3d .ring{position:absolute;inset:4%;border-radius:50%;border:1.5px dashed}
+.art3d .floor{position:absolute;left:28%;right:28%;bottom:17%;height:7%;border-radius:50%;background:radial-gradient(closest-side,rgba(0,0,0,.22),rgba(0,0,0,0))}
+.art3d .o{position:absolute;filter:drop-shadow(0 14px 18px rgba(0,0,0,.20))}
+.art3d .main{width:54%;left:23%;top:19%}
+.art3d .second{width:21%;transform:rotate(-8deg)}
+.art3d .d1{width:13%;transform:rotate(10deg)}.art3d .d2{width:11%;transform:rotate(-12deg);opacity:.95}
+.ob{display:block;filter:drop-shadow(0 10px 14px rgba(0,0,0,.18))}
+.brand{display:flex;align-items:center;gap:12px;white-space:nowrap}
+.brand .mark{width:42px;height:42px;border-radius:13px;display:grid;place-items:center;flex:none;background:linear-gradient(145deg,var(--ac),var(--ac2));box-shadow:0 6px 16px -6px var(--ac)}
+.brand .mark img{width:28px;height:28px;filter:drop-shadow(0 2px 3px rgba(0,0,0,.25))}
+.brand .wm{line-height:1}.brand .wm em{font-style:normal;color:var(--ac)}
+.brand small{display:block;font-family:"Manrope",sans-serif;font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--mu);margin-top:4px;font-weight:700}
+@media(max-width:720px){.brand .wm{font-size:21px!important}.brand .mark{width:36px;height:36px;border-radius:11px}.brand .mark img{width:23px;height:23px}.brand small{font-size:9px}}"""
+
+def logo(name, n, font_css):
+    """Логотип: значок ниши в цветной плитке + название, второе слово акцентом, подпись вида деятельности."""
+    words = name.split(" ")
+    wm = name if len(words) == 1 else " ".join(words[:-1]) + f" <em>{words[-1]}</em>"
+    return f'<div class="brand"><span class="mark"><img src="{img(n["hero"][0])}"></span><span class="wm" style="{font_css}">{wm}<small>{html.escape(n["label"])}</small></span></div>'
 
 def base_css(P, glow):
     ac, ac2, bg, sf, fg, mu, ln, theme = P
@@ -92,7 +129,7 @@ def industrial(l, k, P, name, head, svcs, addr, v):
     n = N[k]; ac, ac2, bg, sf, fg, mu, ln, theme = P
     rows = "".join(f'<div class="row"><span>{html.escape(a)}<small>{html.escape(b)}</small></span><span class="dots"></span><b>{html.escape(c)}</b></div>' for a, b, c in svcs)
     badges = "".join(f"<span>{t}</span>" for t in n.get("badges", []))
-    steps = "".join(f'<div><b>{i}</b><strong>{html.escape(t)}</strong><span class="mu">{html.escape(d)}</span></div>' for i, (t, d) in enumerate(n["steps"], 1))
+    steps = "".join(f'<div><b>{i}</b><strong>{html.escape(t)}</strong><span class="mu">{html.escape(d)}</span></div>' for i, (t, d) in enumerate((n.get("steps") or [("Выберите", "услугу"), ("Оставьте заявку", "на сайте"), ("Подтверждение", "в мессенджере")])[:3], 1))
     lead = n.get("lead", "Цены на все работы, часы работы и вопрос мастеру прямо с сайта.")
     order = "order:-1" if v else ""
     grid = "repeating-linear-gradient(0deg,transparent 0 31px,var(--ln) 31px 32px),repeating-linear-gradient(90deg,transparent 0 31px,var(--ln) 31px 32px),"
@@ -118,7 +155,7 @@ section{{padding:34px 0 0}}
 .contact{{display:grid;grid-template-columns:1fr 1.3fr;gap:14px}}.box{{background:var(--sf);border:1px solid var(--ln);border-radius:14px;padding:20px;display:flex;flex-direction:column;gap:8px}}
 @media(max-width:720px){{.hero,.contact{{grid-template-columns:1fr}}.panel{{order:0}}.steps{{grid-template-columns:1fr}}.pill{{display:none}}}}
 </style></head><body><div class="wrap">
-<div class="top"><div class="logo"><img src="{img(n['hero'][0])}">{name}</div><span class="pill"><i></i>Открыто сейчас</span></div>
+<div class="top">{logo(name, n, 'font-family:Oswald,sans-serif;font-size:28px;text-transform:uppercase;letter-spacing:.05em')}<span class="pill"><i></i>Открыто сейчас</span></div>
 <div class="hero"><div><p class="mu" style="font-weight:700;letter-spacing:.1em;text-transform:uppercase;font-size:13px">{html.escape(l["city"])} · {html.escape(l["addr"])}</p>
 <h1 style="margin-top:12px">{html.escape(head)}</h1><p class="lead">{lead}</p>
 <div class="badges">{badges}</div>{rating_chip(l)}<div class="btns"><span class="cta">{n['cta']}</span><span class="ghost">Цены</span></div></div>
@@ -134,7 +171,7 @@ def elegant(l, k, P, name, head, svcs, addr, v):
     h1 = html.escape(" ".join(words[:-1])) + f' <em>{html.escape(words[-1])}</em>'
     items = "".join(f'<div class="item"><span class="t">{html.escape(a)}<small>{html.escape(b)}</small></span><span class="dots"></span><span class="p">{html.escape(c)}</span></div>' for a, b, c in svcs)
     tiles = "".join(f'<div class="tile" style="background:linear-gradient(160deg,{c1}33,{c2}12)"><img class="ob" src="{img(s)}"><span>{html.escape(t)}</span></div>'
-                    for (s, t), (c1, c2) in zip(n["tiles"], [(ac, ac2), (ac2, ac), (ac, ac), (ac2, ac2)]))
+                    for (s, t), (c1, c2) in zip(n.get("tiles") or [(n["hero"][i % 4], svcs[i % len(svcs)][0]) for i in range(4)], [(ac, ac2), (ac2, ac), (ac, ac), (ac2, ac2)]))
     frame = "border-radius:240px 240px 28px 28px" if v == 0 else "border-radius:50%"
     lead = n.get("lead", "Выберите услугу и удобное время прямо на сайте. Подтверждение придёт в Telegram.")
     return HEAD + f"""<style>{base_css(P, ac + '22')}
@@ -159,7 +196,7 @@ section{{padding:36px 0 0}}h2{{font-family:"Cormorant",serif;font-weight:600;fon
 .contact{{display:grid;grid-template-columns:1fr 1.3fr;gap:14px}}.box{{background:var(--sf);border:1px solid var(--ln);border-radius:24px;padding:22px;display:flex;flex-direction:column;gap:8px}}
 @media(max-width:720px){{.hero,.contact,.list{{grid-template-columns:1fr}}.frame{{order:0}}nav{{grid-template-columns:1fr auto}}nav .l{{display:none}}.logo{{font-size:26px}}.tiles{{grid-template-columns:1fr 1fr}}}}
 </style></head><body><div class="wrap">
-<nav><div class="l"><span>Услуги</span><span>Работы</span><span>Контакты</span></div><div class="logo">{name}</div><div class="r"><span class="cta">{n['cta']}</span></div></nav>
+<nav><div class="l"><span>Услуги</span><span>Работы</span><span>Контакты</span></div>{logo(name, n, 'font-family:Cormorant,serif;font-size:34px;font-weight:600')}<div class="r"><span class="cta">{n['cta']}</span></div></nav>
 <div class="hero"><div><p class="eyebrow">{html.escape(l["city"])} · {html.escape(n['label'])}</p><h1>{h1}</h1>
 <p class="lead">{lead}</p>
 <div class="btns"><span class="cta">{n['cta']}</span><span class="ghost">Услуги и цены</span></div>{rating_chip(l)}</div>
@@ -173,9 +210,9 @@ def friendly(l, k, P, name, head, svcs, addr, v):
     n = N[k]; ac, ac2, bg, sf, fg, mu, ln, theme = P
     cols = [(ac, ac2), (ac2, ac), (ac, "#E8B86A"), (ac2, "#E8B86A")]
     cards = "".join(f'<div class="card"><div class="sw" style="background:linear-gradient(160deg,{c1}30,{c2}14)"><img class="ob" src="{img(s)}"></div><b>{html.escape(a)}</b><span class="mu">{html.escape(b)}</span><b class="pr">{html.escape(c)}</b></div>'
-                    for (a, b, c), s, (c1, c2) in zip(svcs, n["cards"], cols))
+                    for (a, b, c), s, (c1, c2) in zip(svcs, n.get("cards") or n["hero"], cols))
     chips = "".join(f"<span>{t}</span>" for t in n.get("chips", []))
-    steps = "".join(f'<div><i>{i}</i><b>{html.escape(t)}</b><span class="mu">{html.escape(d)}</span></div>' for i, (t, d) in enumerate(n["steps"], 1))
+    steps = "".join(f'<div><i>{i}</i><b>{html.escape(t)}</b><span class="mu">{html.escape(d)}</span></div>' for i, (t, d) in enumerate(n.get("steps") or [("Выберите", "услугу"), ("Оставьте заявку", "на сайте"), ("Подтверждение", "в мессенджере")], 1))
     return HEAD + f"""<style>{base_css(P, ac + '1f')}
 .top{{display:flex;justify-content:space-between;align-items:center;padding:18px 0}}
 .logo{{font-family:"Unbounded",sans-serif;font-size:18px;display:flex;align-items:center;gap:10px}}.logo img{{width:32px}}
@@ -193,7 +230,7 @@ section{{padding:36px 0 0}}h2{{font-family:"Unbounded",sans-serif;font-size:26px
 .contact{{display:grid;grid-template-columns:1fr 1.3fr;gap:14px}}.box{{background:var(--sf);border:1px solid var(--ln);border-radius:24px;padding:22px;display:flex;flex-direction:column;gap:8px}}
 @media(max-width:720px){{.heroc,.contact{{grid-template-columns:1fr}}.cards,.steps{{grid-template-columns:1fr 1fr}}.heroc{{padding:22px}}}}
 </style></head><body><div class="wrap">
-<div class="top"><div class="logo"><img src="{img(n['hero'][0])}">{name}</div><span class="cta">{n['cta']}</span></div>
+<div class="top">{logo(name, n, 'font-family:Unbounded,sans-serif;font-size:22px')}<span class="cta">{n['cta']}</span></div>
 <div class="heroc"><div><h1>{html.escape(head)}</h1><p class="lead">{n.get('lead', '')}</p>
 <div class="btns"><span class="cta">{n['cta']}</span><span class="ghost">{n.get('menu_title', 'Меню')} и цены</span></div>
 <div class="chips">{chips}</div>{rating_chip(l)}</div><div>{art(n['hero'], ac, ac2, theme, v)}</div></div>
@@ -205,10 +242,13 @@ section{{padding:36px 0 0}}h2{{font-family:"Unbounded",sans-serif;font-size:26px
 def page(l):
     k = niche_of(l); n = N[k]; P = palette(l, k)
     name = html.escape(l["name"].split(",")[0].strip())
-    head = n["heads"][h(l["id"], "h") % len(n["heads"])]
+    head = n["heads"][(h(l["id"], "h") + VARIANT - 1) % len(n["heads"])]
+    motto = str(l.get("motto") or "").strip().strip("«»\"").rstrip(".!")
+    if VARIANT == 1 and motto and len(motto) <= 48: head = motto  # девиз самого бизнеса — самый личный заголовок
     addr = html.escape(f'{l["city"]}, {l["addr"]}')
-    v = h(l["id"], "v") % 2
-    fn = {"industrial": industrial, "elegant": elegant, "friendly": friendly}[n["layout"]]
+    v = (h(l["id"], "v") + VARIANT - 1) % 2
+    lay = n["layout"] if VARIANT == 1 else {"industrial": "elegant", "elegant": "friendly", "friendly": "elegant"}[n["layout"]]
+    fn = {"industrial": industrial, "elegant": elegant, "friendly": friendly}[lay]
     return fn(l, k, P, name, head, services(l, k), addr, v), k, P
 
 def render(leads):
@@ -216,6 +256,7 @@ def render(leads):
     for l in leads:
         doc, k, P = page(l); meta[l["id"]] = (k, P)
         p = f"{TMP}/{l['id']}.html"; open(p, "w").write(doc)
+        sfx = "" if VARIANT == 1 else f"-{VARIANT}"
         jobs += [{"src": p, "out": f"{TMP}/{l['id']}_d.png", "w": 1280, "h": 800, "scale": 2},
                  {"src": p, "out": f"{TMP}/{l['id']}_f.png", "w": 390, "h": 844, "full": True, "scale": 2},
                  {"src": p, "out": f"{TMP}/{l['id']}_m.png", "w": 390, "h": 844, "scale": 2}]
@@ -227,9 +268,10 @@ def render(leads):
         sw = [p[0] for p in N[k]["palettes"]] + ["#5C8DD6", "#7E9C8A", "#C9A46A"]
         seen = []; [seen.append(c) for c in sw if c not in seen]
         name = l["name"].split(",")[0].strip()
-        cover(f"{TMP}/{l['id']}_d.png", f"{TMP}/{l['id']}_f.png", f"{TMP}/{l['id']}_m.png", f"{OUT}/{l['id']}.jpg",
-              f"Так может выглядеть сайт: {name}", "Компьютер и телефон, заявки сразу в Telegram", ac, dark,
-              note="Это первый набросок: цвета, стиль и разделы можно полностью поменять под вас", swatches=seen[:5])
+        sfx = "" if VARIANT == 1 else f"-{VARIANT}"
+        cover(f"{TMP}/{l['id']}_d.png", f"{TMP}/{l['id']}_f.png", f"{TMP}/{l['id']}_m.png", f"{OUT}/{l['id']}{sfx}.jpg",
+              f"Так может выглядеть сайт: {name}" if VARIANT == 1 else f"Ещё один вариант сайта: {name}", "Компьютер и телефон, заявки сразу в Telegram", ac, dark,
+              note=("Это первый набросок: цвета, стиль и разделы можно полностью поменять под вас" if VARIANT == 1 else "Другой стиль для сравнения: можно выбрать любой или смешать, всё подстроим под вас"), swatches=seen[:5])
     return meta
 
 if __name__ == "__main__":
