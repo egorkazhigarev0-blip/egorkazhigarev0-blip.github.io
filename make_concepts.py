@@ -44,21 +44,24 @@ def photo_uri(i, w=1100):
     if key not in _pc:
         from PIL import Image
         import io
-        im = Image.open(os.path.join(PHOTOS, f"p{i}.jpg")).convert("RGB"); im.thumbnail((w, w))
+        name = f"{i}.jpg" if isinstance(i, str) else f"p{i}.jpg"  # u<id> — Unsplash, число — Pixabay
+        im = Image.open(os.path.join(PHOTOS, name)).convert("RGB"); im.thumbnail((w, w))
         b = io.BytesIO(); im.save(b, "JPEG", quality=84)
         _pc[key] = "data:image/jpeg;base64," + base64.b64encode(b.getvalue()).decode()
     return _pc[key]
 
-HERO_POOL = {"pets": 12, "flowers": 7, "cake": 4, "nails": 3, "salon": 4, "brows": 3, "coffee": 4, "auto": 5, "massage": 4, "fitness": 3}
+HERO_POOL = {"barber": 5, "nails": 5, "watch": 5, "pets": 6, "cake": 6, "salon": 4, "flowers": 6, "coffee": 5, "bakery": 5, "brows": 3,
+             "massage": 5, "tattoo": 4, "photo": 4, "phone": 4, "auto": 4, "tailor": 4, "keys": 4, "furniture": 3, "cleaning": 4,
+             "renovation": 3, "shoe": 3, "fitness": 3}
 USED_HERO = set()
 
 def photos_for(l, k):
     """Свой набор фото для каждого бизнеса: сдвиг по id, чтобы у соседних клиентов были разные кадры.
     Фото только в первом варианте; второй остаётся иллюстрированным для сравнения стилей."""
-    if VARIANT != 1 or os.environ.get("NO_PHOTOS"): return []
+    if os.environ.get("NO_PHOTOS") or (VARIANT != 1 and not os.environ.get("PHOTOS_V2")): return []
     ids = PIDX.get(k) or []
     if not ids: return []
-    r = h(l["id"], "p")
+    r = h(l["id"], "p") + (VARIANT - 1) * 7
     pool = ids[:HERO_POOL.get(k, 3)]
     # разные бизнесы в одном запуске получают разные главные фото (пока хватает кадров)
     start = r % len(pool)
@@ -72,10 +75,10 @@ def photos_for(l, k):
 def photo_hero(ph, ac, n, l, shape="22px", ratio="4/4.4"):
     """Крупное фото + стеклянная карточка с рейтингом/записью + маленький 3D-значок: смесь фото и иллюстрации."""
     r, c = l.get("rating"), l.get("reviews")
-    if r and c and c >= 5:
+    if r and c and c >= 5 and float(r) >= 4.5:  # низкий рейтинг на набросок не выносим
         card = f'<b>★ {float(r):.1f}</b><span>{c} {plural(c, "оценка", "оценки", "оценок")}</span>'.replace(".", ",", 1)
     else:
-        card = '<b>24/7</b><span>запись онлайн</span>'
+        card = '<b>24/7</b><span>заявки с сайта</span>'
     return (f'<div class="phero" style="border-radius:{shape};aspect-ratio:{ratio}"><img class="pimg" src="{photo_uri(ph[0])}">'
             f'<div class="glass">{card}</div><span class="pbadge"><img src="{img(n["hero"][0])}"></span></div>')
 
@@ -103,7 +106,7 @@ def plural(n, a, b, c):
 
 def rating_chip(l):
     r, n = l.get("rating"), l.get("reviews")
-    if not r or not n or n < 5: return ""
+    if not r or not n or n < 5 or float(r) < 4.5: return ""
     return f'<span class="rate"><b>★ {float(r):.1f}'.replace(".", ",") + f'</b> · {n} {plural(n, "оценка", "оценки", "оценок")} на картах</span>'
 
 DECOR = {"sparkles", "star", "glowing_star", "paw_prints", "bubbles", "herb", "cherry_blossom", "strawberry", "droplet", "sparkling_heart", "gem_stone", "leafy_green"}
