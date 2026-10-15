@@ -70,8 +70,6 @@ details p{color:var(--muted);margin-top:8px}
 .contact{background:var(--fg);color:var(--bg);border-radius:22px;padding:28px;display:flex;justify-content:space-between;align-items:center;gap:20px;flex-wrap:wrap}
 .contact h2{color:var(--bg)}
 .contact p{opacity:.8;margin-top:6px}
-.ways{display:flex;gap:10px;flex-wrap:wrap}
-.ways a,.ways span{background:var(--bg);color:var(--fg);border-radius:12px;padding:12px 16px;font-weight:700;text-decoration:none;word-break:break-all}
 footer{padding-block:24px;color:var(--muted);font-size:14px}
 @media (max-width:860px){.plans{grid-template-columns:1fr}}
 </style>
@@ -79,13 +77,13 @@ footer{padding-block:24px;color:var(--muted);font-size:14px}
 <body>
 <header class="top"><div class="wrap">
   <div class="logo">Сайты <span>за 5 дней</span></div>
-  <a class="btn ghost" href="#contact">Написать</a>
+  <a class="btn ghost" href="#plans">Примеры</a>
 </div></header>
 
 <div class="wrap hero">
   <h1>Сайт, через который вам <mark>пишут клиенты</mark></h1>
   <p>Делаю сайты для мастеров, кондитеров, мастерских и небольших магазинов. Услуги с ценами, фото работ и заявки прямо в Telegram или на почту.</p>
-  <div class="cta"><a class="btn" href="#plans">Посмотреть примеры</a><a class="btn ghost" href="#contact">Обсудить ваш сайт</a></div>
+  <div class="cta"><a class="btn" href="#plans">Посмотреть примеры</a><a class="btn ghost" href="#how">Как я работаю</a></div>
   <div class="offer">Первым клиентам цена ниже в обмен на отзыв. Черновик главной страницы покажу бесплатно</div>
 </div>
 
@@ -136,7 +134,7 @@ footer{padding-block:24px;color:var(--muted);font-size:14px}
   </div>
 </div></section>
 
-<section><div class="wrap">
+<section id="how"><div class="wrap">
   <h2>Как работаем</h2>
   <div class="steps">
     <div><b>Пишете мне</b><p>Рассказываете, чем занимаетесь, и присылаете фото работ.</p></div>
@@ -155,25 +153,11 @@ footer{padding-block:24px;color:var(--muted);font-size:14px}
 
 <section id="contact"><div class="wrap">
   <div class="contact">
-    <div><h2>Обсудим ваш сайт?</h2><p>Отвечаю в течение пары часов. Черновик главной страницы бесплатно.</p></div>
-    <div class="ways" id="ways"><span>Контакты появятся здесь</span></div>
+    <div><h2>Обсудим ваш сайт?</h2><p>Просто ответьте на сообщение, в котором получили эту ссылку. Отвечаю в течение пары часов, черновик главной страницы бесплатно.</p></div>
   </div>
 </div></section>
 
 <footer><div class="wrap">Примеры на этой странице сделаны для вымышленных бизнесов.</div></footer>
 
-<script>
-// Контакты: впишите свои и сохраните файл
-const CONTACTS = {
-  vk: "",     // например: https://vk.com/id123
-  email: "",  // например: mail@example.ru
-  avito: ""   // ссылка на ваше объявление
-};
-const ways=[];
-if(CONTACTS.vk) ways.push(`<a href="${CONTACTS.vk}" target="_blank" rel="noopener">ВКонтакте</a>`);
-if(CONTACTS.avito) ways.push(`<a href="${CONTACTS.avito}" target="_blank" rel="noopener">Авито</a>`);
-if(CONTACTS.email) ways.push(`<span>${CONTACTS.email}</span>`);
-if(ways.length) document.getElementById("ways").innerHTML=ways.join("");
-</script>
 </body>
 </html>
