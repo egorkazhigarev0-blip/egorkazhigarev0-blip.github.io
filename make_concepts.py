@@ -5,8 +5,8 @@ from cover import cover
 from illus import BY_KIND
 
 DB = "/tmp/claude-0/-home-claude-atremt-github-io/df46a9db-46d7-5fa7-a18d-c4a297ce7691/scratchpad/db2/leads"
-OUT = os.environ.get("OUT_DIR", "/home/claude/mockups")
-TMP = os.environ.get("TMP_DIR", "/tmp/claude-0/-home-claude-atremt-github-io/df46a9db-46d7-5fa7-a18d-c4a297ce7691/scratchpad/concept")
+OUT = os.path.abspath(os.environ.get("OUT_DIR", "/home/claude/mockups"))
+TMP = os.path.abspath(os.environ.get("TMP_DIR", "/tmp/claude-0/-home-claude-atremt-github-io/df46a9db-46d7-5fa7-a18d-c4a297ce7691/scratchpad/concept"))
 os.makedirs(TMP, exist_ok=True); os.makedirs(OUT, exist_ok=True)
 
 # палитры по типу бизнеса: акцент, второй тон, фон, поверхность, текст, приглушённый, линия, тема
