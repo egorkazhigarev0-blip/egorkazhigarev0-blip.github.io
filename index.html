@@ -1,0 +1,179 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Сайты для малого бизнеса</title>
+<meta name="description" content="Простые и красивые сайты для мастеров, кондитеров и мастерских. От 1 490 ₽, готово за 2–5 дней.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Unbounded:wght@600;700&family=Golos+Text:wght@400;500;600;700&display=swap">
+<style>
+/* Layout: портфолио веб-мастера — заголовок-предложение, три примера с ценами, что входит, как работаем, вопросы, контакт */
+:root{
+  --bg:#F4F6F5; --surface:#FFFFFF; --fg:#16201D; --muted:#5C6964; --line:#D9E0DD;
+  --accent:#0E7C6B; --accent-ink:#FFFFFF; --accent-soft:#DCEFEA; --mark:#E8B83A;
+  --display:"Unbounded","Arial Black",system-ui,sans-serif;
+  --body:"Golos Text",system-ui,-apple-system,"Segoe UI",sans-serif;
+  color-scheme:light;
+}
+@media (prefers-color-scheme:dark){:root{
+  --bg:#101614; --surface:#18201D; --fg:#E6EEEA; --muted:#9AA9A3; --line:#28332F;
+  --accent:#4FC7B2; --accent-ink:#0D1412; --accent-soft:#163631; --mark:#F0C75A; color-scheme:dark}}
+*{box-sizing:border-box}
+html,body{margin:0}
+body{background:var(--bg);color:var(--fg);font-family:var(--body);font-size:16px;line-height:1.55}
+.wrap{max-width:1080px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+h1,h2,h3{font-family:var(--display);line-height:1.12;margin:0;text-wrap:balance}
+h2{font-size:clamp(24px,4vw,34px)}
+p{margin:0}
+.btn{display:inline-block;background:var(--accent);color:var(--accent-ink);font-weight:700;border:0;border-radius:12px;padding:13px 22px;font-size:16px;text-decoration:none;cursor:pointer;font-family:var(--body)}
+.btn.ghost{background:transparent;color:var(--fg);border:1px solid var(--line)}
+:focus-visible{outline:3px solid var(--mark);outline-offset:2px}
+header.top .wrap{display:flex;justify-content:space-between;align-items:center;gap:12px;padding-block:18px}
+.logo{font-family:var(--display);font-size:16px}
+.logo span{color:var(--accent)}
+.hero{padding-block:32px 48px}
+.hero h1{font-size:clamp(32px,6vw,60px);max-width:16ch}
+.hero h1 mark{background:linear-gradient(transparent 62%,var(--mark) 62%);color:inherit;padding:0 .1em}
+.hero p{font-size:19px;color:var(--muted);margin-top:18px;max-width:46ch}
+.hero .cta{display:flex;gap:12px;flex-wrap:wrap;margin-top:26px}
+.offer{display:inline-flex;gap:8px;align-items:center;margin-top:22px;background:var(--accent-soft);color:var(--accent);font-weight:600;border-radius:999px;padding:8px 14px;font-size:14px}
+section{padding-block:44px}
+.sub{color:var(--muted);margin-top:8px;max-width:60ch}
+.plans{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px;margin-top:24px}
+.plan{background:var(--surface);border:1px solid var(--line);border-radius:18px;overflow:hidden;display:flex;flex-direction:column}
+.plan.best{border:2px solid var(--accent)}
+.plan .shot{display:block;aspect-ratio:16/10;overflow:hidden;border-bottom:1px solid var(--line);background:var(--bg)}
+.plan .shot img{width:100%;height:100%;object-fit:cover;object-position:top;display:block;transition:transform .3s}
+.plan .shot:hover img{transform:scale(1.03)}
+.plan .body{padding:18px;display:flex;flex-direction:column;gap:10px;flex:1}
+.tag{font-size:12px;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);font-weight:700}
+.plan h3{font-size:20px}
+.price{display:flex;align-items:baseline;gap:10px;flex-wrap:wrap;font-variant-numeric:tabular-nums}
+.price b{font-family:var(--display);font-size:26px}
+.price small{color:var(--muted)}
+.plan ul{margin:0;padding-left:18px;color:var(--muted);font-size:15px;display:grid;gap:4px;flex:1}
+.plan .btn{text-align:center}
+.inc{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px;margin-top:22px}
+.inc div{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:16px}
+.inc b{display:block;margin-bottom:4px}
+.inc p{color:var(--muted);font-size:15px}
+.steps{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px;margin-top:22px;counter-reset:s}
+.steps div{border-top:3px solid var(--accent);padding-top:12px}
+.steps b{display:block}
+.steps b::before{counter-increment:s;content:counter(s) ". ";color:var(--accent)}
+.steps p{color:var(--muted);font-size:15px;margin-top:4px}
+details{border-bottom:1px solid var(--line);padding-block:14px;max-width:760px}
+summary{cursor:pointer;font-weight:600;font-size:17px}
+details p{color:var(--muted);margin-top:8px}
+.contact{background:var(--fg);color:var(--bg);border-radius:22px;padding:28px;display:flex;justify-content:space-between;align-items:center;gap:20px;flex-wrap:wrap}
+.contact h2{color:var(--bg)}
+.contact p{opacity:.8;margin-top:6px}
+.ways{display:flex;gap:10px;flex-wrap:wrap}
+.ways a,.ways span{background:var(--bg);color:var(--fg);border-radius:12px;padding:12px 16px;font-weight:700;text-decoration:none;word-break:break-all}
+footer{padding-block:24px;color:var(--muted);font-size:14px}
+@media (max-width:860px){.plans{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<header class="top"><div class="wrap">
+  <div class="logo">Сайты <span>за 5 дней</span></div>
+  <a class="btn ghost" href="#contact">Написать</a>
+</div></header>
+
+<div class="wrap hero">
+  <h1>Сайт, через который вам <mark>пишут клиенты</mark></h1>
+  <p>Делаю сайты для мастеров, кондитеров, мастерских и небольших магазинов. Услуги с ценами, фото работ и заявки прямо в Telegram или на почту.</p>
+  <div class="cta"><a class="btn" href="#plans">Посмотреть примеры</a><a class="btn ghost" href="#contact">Обсудить ваш сайт</a></div>
+  <div class="offer">Первым клиентам цена ниже в обмен на отзыв. Черновик главной страницы покажу бесплатно</div>
+</div>
+
+<section id="plans"><div class="wrap">
+  <h2>Примеры и цены</h2>
+  <p class="sub">Нажмите на картинку, чтобы открыть пример. Все сайты работают на телефоне и компьютере.</p>
+  <div class="plans">
+    <article class="plan">
+      <a class="shot" href="remont/"><img src="img/remont.png" alt="Пример: сайт мастерской по ремонту обуви и часов" loading="lazy"></a>
+      <div class="body">
+        <span class="tag">Старт</span>
+        <h3>Сайт-визитка</h3>
+        <div class="price"><b>1 490 ₽</b><small>первым клиентам, потом 1 990 ₽</small></div>
+        <ul><li>Одна страница</li><li>Услуги и цены</li><li>Часы работы и «открыто сейчас»</li><li>Вопрос мастеру с ответом в Telegram</li><li>Готово за 2–3 дня</li></ul>
+        <a class="btn ghost" href="remont/">Открыть пример</a>
+      </div>
+    </article>
+    <article class="plan best">
+      <a class="shot" href="tort/"><img src="img/tort.png" alt="Пример: сайт кондитерской с калькулятором цены торта" loading="lazy"></a>
+      <div class="body">
+        <span class="tag">Стандарт · чаще всего выбирают</span>
+        <h3>Сайт с калькулятором</h3>
+        <div class="price"><b>2 490 ₽</b><small>первым клиентам, потом 3 490 ₽</small></div>
+        <ul><li>Каталог товаров или услуг</li><li>Калькулятор стоимости</li><li>Форма заказа с заявкой в Telegram</li><li>Ответы на частые вопросы</li><li>Готово за 3–4 дня</li></ul>
+        <a class="btn" href="tort/">Открыть пример</a>
+      </div>
+    </article>
+    <article class="plan">
+      <a class="shot" href="nogti/"><img src="img/nogti.png" alt="Пример: сайт студии маникюра с онлайн-записью" loading="lazy"></a>
+      <div class="body">
+        <span class="tag">Премиум</span>
+        <h3>Сайт с онлайн-записью</h3>
+        <div class="price"><b>4 490 ₽</b><small>первым клиентам, потом 5 990 ₽</small></div>
+        <ul><li>Запись: услуга, мастер, день и время</li><li>Галерея работ с фильтрами</li><li>Страница мастеров</li><li>Продуманный дизайн под ваш бренд</li><li>Готово за 5–7 дней</li></ul>
+        <a class="btn ghost" href="nogti/">Открыть пример</a>
+      </div>
+    </article>
+  </div>
+</div></section>
+
+<section><div class="wrap">
+  <h2>Что входит в любой сайт</h2>
+  <div class="inc">
+    <div><b>Работает на телефоне</b><p>Большинство клиентов откроют сайт со смартфона.</p></div>
+    <div><b>Заявки в Telegram или на почту</b><p>Не нужно заходить на сайт, чтобы увидеть новый заказ.</p></div>
+    <div><b>Тексты под ваш бизнес</b><p>Напишу сам по вашим ответам на несколько вопросов.</p></div>
+    <div><b>Две правки бесплатно</b><p>Поменяю тексты, цены или фото, пока вам не понравится.</p></div>
+  </div>
+</div></section>
+
+<section><div class="wrap">
+  <h2>Как работаем</h2>
+  <div class="steps">
+    <div><b>Пишете мне</b><p>Рассказываете, чем занимаетесь, и присылаете фото работ.</p></div>
+    <div><b>Бесплатный черновик</b><p>За 1–2 дня показываю, как будет выглядеть главная страница.</p></div>
+    <div><b>Предоплата 50%</b><p>Если черновик нравится, доделываю остальное.</p></div>
+    <div><b>Сайт готов</b><p>Вносим правки, вы оплачиваете остаток и получаете ссылку.</p></div>
+  </div>
+</div></section>
+
+<section><div class="wrap">
+  <h2>Вопросы</h2>
+  <details><summary>Нужно ли платить каждый месяц?</summary><p>Нет. Сайт размещается бесплатно. Платно только собственный адрес вроде vash-salon.ru, около 200–600 ₽ в год, и он по желанию.</p></details>
+  <details><summary>Можно потом поменять цены?</summary><p>Да. Мелкие правки после сдачи стоят 300 ₽.</p></details>
+  <details><summary>Чем это лучше группы ВКонтакте?</summary><p>Сайт находят в Яндексе и на картах, на нём сразу видны цены и работы, а записаться можно без переписки. Группу ВК лучше оставить и поставить в ней ссылку на сайт.</p></details>
+</div></section>
+
+<section id="contact"><div class="wrap">
+  <div class="contact">
+    <div><h2>Обсудим ваш сайт?</h2><p>Отвечаю в течение пары часов. Черновик главной страницы бесплатно.</p></div>
+    <div class="ways" id="ways"><span>Контакты появятся здесь</span></div>
+  </div>
+</div></section>
+
+<footer><div class="wrap">Примеры на этой странице сделаны для вымышленных бизнесов.</div></footer>
+
+<script>
+// Контакты: впишите свои и сохраните файл
+const CONTACTS = {
+  vk: "",     // например: https://vk.com/id123
+  email: "",  // например: mail@example.ru
+  avito: ""   // ссылка на ваше объявление
+};
+const ways=[];
+if(CONTACTS.vk) ways.push(`<a href="${CONTACTS.vk}" target="_blank" rel="noopener">ВКонтакте</a>`);
+if(CONTACTS.avito) ways.push(`<a href="${CONTACTS.avito}" target="_blank" rel="noopener">Авито</a>`);
+if(CONTACTS.email) ways.push(`<span>${CONTACTS.email}</span>`);
+if(ways.length) document.getElementById("ways").innerHTML=ways.join("");
+</script>
+</body>
+</html>

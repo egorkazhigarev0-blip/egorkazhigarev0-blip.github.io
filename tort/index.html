@@ -1,0 +1,242 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Торты от Ани</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Unbounded:wght@500;700&family=Manrope:wght@400;600;700&display=swap">
+<style>
+/* Layout: одностраничник домашней кондитерской — герой с тортом, начинки, калькулятор цены, заявка */
+:root{
+  --bg:#FBF6F8; --surface:#FFFFFF; --fg:#2B1D29; --muted:#76626F;
+  --accent:#C2185B; --accent-ink:#FFFFFF; --pista:#6E9A5C; --line:#EBDDE4;
+  --cream:#F6E3EA; --choc:#5A3426;
+  --display:"Unbounded","Arial Black",system-ui,sans-serif;
+  --body:"Manrope",system-ui,-apple-system,"Segoe UI",sans-serif;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --bg:#1C1419; --surface:#271C23; --fg:#F5EAF0; --muted:#B9A3B0;
+  --accent:#F06292; --accent-ink:#1C1419; --pista:#9CC488; --line:#3A2B34;
+  --cream:#3A2731; --choc:#8A5A44; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#1C1419; --surface:#271C23; --fg:#F5EAF0; --muted:#B9A3B0;
+  --accent:#F06292; --accent-ink:#1C1419; --pista:#9CC488; --line:#3A2B34;
+  --cream:#3A2731; --choc:#8A5A44; color-scheme:dark}
+*{box-sizing:border-box}
+html,body{margin:0}
+body{background:var(--bg);color:var(--fg);font-family:var(--body);font-size:16px;line-height:1.55}
+.wrap{max-width:1040px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+h1,h2,h3{font-family:var(--display);line-height:1.15;text-wrap:balance;margin:0}
+h2{font-size:clamp(24px,4vw,34px)}
+p{margin:0}
+a{color:var(--accent)}
+.demo{background:var(--fg);color:var(--bg);text-align:center;font-size:13px;padding-block:6px}
+header.top{padding-block:16px;display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap}
+.logo{font-family:var(--display);font-weight:700;font-size:18px}
+.logo span{color:var(--accent)}
+.btn{display:inline-block;background:var(--accent);color:var(--accent-ink);font-weight:700;border:0;border-radius:999px;padding:12px 22px;font-size:15px;text-decoration:none;cursor:pointer;font-family:var(--body)}
+.btn:focus-visible,input:focus-visible,select:focus-visible{outline:3px solid var(--pista);outline-offset:2px}
+.btn.ghost{background:transparent;color:var(--fg);border:2px solid var(--line)}
+.hero{display:grid;grid-template-columns:1.2fr 1fr;gap:32px;align-items:center;padding-block:28px 48px}
+.hero h1{font-size:clamp(32px,6vw,58px)}
+.hero h1 em{font-style:normal;color:var(--accent)}
+.hero p.lead{color:var(--muted);font-size:18px;margin-top:16px;max-width:34ch}
+.hero .actions{display:flex;gap:12px;flex-wrap:wrap;margin-top:24px}
+.facts{display:flex;gap:24px;flex-wrap:wrap;margin-top:28px;font-size:14px;color:var(--muted)}
+.facts b{display:block;font-family:var(--display);font-size:20px;color:var(--fg)}
+/* торт из CSS */
+.cake{position:relative;height:300px;display:flex;flex-direction:column;align-items:center;justify-content:flex-end}
+.tier{border-radius:14px 14px 6px 6px;position:relative}
+.t3{width:110px;height:62px;background:var(--cream);border-bottom:10px solid var(--choc)}
+.t2{width:170px;height:70px;background:var(--accent);border-bottom:10px solid var(--choc);margin-top:-2px}
+.t1{width:230px;height:78px;background:var(--cream);border-bottom:10px solid var(--choc);margin-top:-2px}
+.plate{width:280px;height:12px;border-radius:50%;background:var(--line);margin-top:-2px}
+.drip{position:absolute;top:0;left:0;right:0;height:22px;background:radial-gradient(circle at 12px 0,var(--choc) 11px,transparent 12px) 0 0/24px 22px repeat-x;opacity:.85}
+.berry{position:absolute;width:18px;height:18px;border-radius:50%;background:var(--accent);top:-12px;box-shadow:inset -3px -3px 0 rgba(0,0,0,.18)}
+.t2 .berry{background:var(--pista)}
+section{padding-block:48px}
+.sub{color:var(--muted);margin-top:8px;max-width:60ch}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:16px;margin-top:24px}
+.fill{background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:18px;display:flex;flex-direction:column;gap:8px}
+.swatch{height:56px;border-radius:10px;display:flex;overflow:hidden}
+.swatch i{flex:1}
+.fill h3{font-size:16px}
+.fill p{color:var(--muted);font-size:14px;flex:1}
+.price{font-weight:700;font-variant-numeric:tabular-nums}
+.price small{color:var(--muted);font-weight:400}
+.calc{display:grid;grid-template-columns:1fr 1fr;gap:24px;margin-top:24px;background:var(--surface);border:1px solid var(--line);border-radius:20px;padding:24px}
+.calc>*{min-width:0}
+label{display:block;font-weight:600;font-size:14px;margin-bottom:6px}
+select,input{width:100%;font:inherit;color:var(--fg);background:var(--bg);border:1px solid var(--line);border-radius:10px;padding:10px 12px}
+input[type=range]{padding:0;accent-color:var(--accent)}
+.field{margin-bottom:16px}
+.checks{display:grid;gap:8px}
+.checks label{display:flex;gap:10px;align-items:center;font-weight:400;margin:0}
+.checks input{width:18px;height:18px;accent-color:var(--accent)}
+.total{display:flex;flex-direction:column;justify-content:center;gap:6px;background:var(--cream);border-radius:16px;padding:20px}
+.total .sum{font-family:var(--display);font-size:clamp(30px,6vw,44px);font-variant-numeric:tabular-nums}
+.total ul{margin:6px 0 0;padding-left:18px;color:var(--muted);font-size:14px}
+.steps{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:16px;margin-top:24px}
+.step b{font-family:var(--display);color:var(--accent);font-size:22px;display:block}
+.step p{color:var(--muted);font-size:15px}
+form.order{display:grid;grid-template-columns:1fr 1fr;gap:0 16px;margin-top:24px;max-width:640px}
+form.order .full{grid-column:1/-1}
+.result{margin-top:16px;max-width:640px;background:var(--surface);border:2px dashed var(--pista);border-radius:16px;padding:16px;white-space:pre-wrap}
+details{border-bottom:1px solid var(--line);padding-block:14px;max-width:700px}
+summary{font-weight:700;cursor:pointer}
+details p{color:var(--muted);margin-top:8px}
+footer{border-top:1px solid var(--line);padding-block:24px;color:var(--muted);font-size:14px}
+@media (max-width:720px){
+  .hero,.calc,form.order{grid-template-columns:1fr}
+  .cake{height:240px;transform:scale(.85)}
+}
+@media (prefers-reduced-motion:no-preference){.cake .berry{animation:bob 3s ease-in-out infinite}.cake .berry:nth-child(2n){animation-delay:.6s}}
+@keyframes bob{50%{transform:translateY(-3px)}}
+</style>
+
+</head>
+<body>
+<div class="demo">Демо-сайт для портфолио · бизнес и контакты вымышленные</div>
+
+<div class="wrap">
+  <header class="top">
+    <div class="logo">Торты <span>от Ани</span></div>
+    <a class="btn ghost" href="#order">Заказать торт</a>
+  </header>
+
+  <div class="hero">
+    <div>
+      <h1>Домашние торты <em>на ваш праздник</em></h1>
+      <p class="lead">Пеку по вашему заказу из сливочного масла, настоящих сливок и свежих ягод. Без маргарина и консервантов.</p>
+      <div class="actions">
+        <a class="btn" href="#calc">Рассчитать стоимость</a>
+        <a class="btn ghost" href="#fillings">Начинки</a>
+      </div>
+      <div class="facts">
+        <div><b>от 1,5 кг</b>минимальный вес</div>
+        <div><b>за 3 дня</b>принимаю заказ</div>
+        <div><b>5 начинок</b>на выбор</div>
+      </div>
+    </div>
+    <div class="cake" aria-hidden="true">
+      <div class="tier t3"><span class="drip"></span><i class="berry" style="left:20px"></i><i class="berry" style="left:46px"></i><i class="berry" style="left:72px"></i></div>
+      <div class="tier t2"><span class="drip"></span><i class="berry" style="left:24px"></i><i class="berry" style="left:128px"></i></div>
+      <div class="tier t1"><span class="drip"></span></div>
+      <div class="plate"></div>
+    </div>
+  </div>
+</div>
+
+<section id="fillings"><div class="wrap">
+  <h2>Начинки</h2>
+  <p class="sub">Цена указана за килограмм готового торта. Оформление кремом и надпись входят в стоимость.</p>
+  <div class="grid" id="fillGrid"></div>
+</div></section>
+
+<section id="calc"><div class="wrap">
+  <h2>Сколько будет стоить</h2>
+  <p class="sub">На 1 гостя обычно берут 150–200 г торта. На 10 человек хватит 2 кг.</p>
+  <div class="calc">
+    <div>
+      <div class="field">
+        <label for="cFill">Начинка</label>
+        <select id="cFill"></select>
+      </div>
+      <div class="field">
+        <label for="cWeight">Вес: <span id="wOut">2 кг</span> · примерно <span id="gOut">10–13</span> гостей</label>
+        <input type="range" id="cWeight" min="1.5" max="5" step="0.5" value="2">
+      </div>
+      <div class="field">
+        <label>Украшения</label>
+        <div class="checks" id="cDecor"></div>
+      </div>
+    </div>
+    <div class="total" aria-live="polite">
+      <span>Итого примерно</span>
+      <span class="sum" id="sum">0 ₽</span>
+      <ul id="breakdown"></ul>
+    </div>
+  </div>
+</div></section>
+
+<section><div class="wrap">
+  <h2>Как заказать</h2>
+  <div class="steps">
+    <div class="step"><b>1</b><p>Выберите начинку и вес в калькуляторе или напишите, если не уверены.</p></div>
+    <div class="step"><b>2</b><p>Обсудим дизайн. Можно прислать картинку-пример.</p></div>
+    <div class="step"><b>3</b><p>Предоплата 50%. Остальное при получении.</p></div>
+    <div class="step"><b>4</b><p>Самовывоз или доставка по городу в день праздника.</p></div>
+  </div>
+</div></section>
+
+<section id="order"><div class="wrap">
+  <h2>Заявка на торт</h2>
+  <p class="sub">Заполните форму, и я свяжусь с вами в течение часа.</p>
+  <form class="order" id="orderForm">
+    <div class="field"><label for="oName">Имя</label><input id="oName" required placeholder="Мария"></div>
+    <div class="field"><label for="oPhone">Телефон</label><input id="oPhone" type="tel" required placeholder="+7 900 000-00-00"></div>
+    <div class="field"><label for="oDate">Дата праздника</label><input id="oDate" type="date" required></div>
+    <div class="field"><label for="oEvent">Повод</label>
+      <select id="oEvent"><option>День рождения</option><option>Детский праздник</option><option>Свадьба</option><option>Другое</option></select></div>
+    <div class="field full"><label for="oNote">Пожелания</label><input id="oNote" placeholder="Например: надпись «С днём рождения, Саша!»"></div>
+    <div class="full"><button class="btn" type="submit">Отправить заявку</button></div>
+  </form>
+  <div class="result" id="result" hidden></div>
+</div></section>
+
+<section><div class="wrap">
+  <h2>Частые вопросы</h2>
+  <details><summary>Можно сделать торт без сахара или без глютена?</summary><p>Да, напишите заранее. Такие торты стоят на 300 ₽/кг дороже.</p></details>
+  <details><summary>Сколько хранится торт?</summary><p>До 3 суток в холодильнике при +2…+6 °C.</p></details>
+  <details><summary>Есть ли доставка?</summary><p>Да, по городу 300 ₽. Самовывоз бесплатно.</p></details>
+</div></section>
+
+<footer><div class="wrap">Торты от Ани · демо-проект · Телефон: +7 900 000-00-00 (вымышленный)</div></footer>
+
+<script>
+const fills=[
+  {n:"Шоколад и вишня",d:"Шоколадный бисквит, вишнёвый конфитюр, крем на сливках",p:1900,c:["#4A2A1E","#8E1B2E","#F3E1D6"]},
+  {n:"Ваниль и клубника",d:"Ванильный бисквит, свежая клубника, крем-чиз",p:1800,c:["#F7E7B4","#E2475C","#FFF6EE"]},
+  {n:"Сникерс",d:"Шоколадный бисквит, карамель, жареный арахис",p:2000,c:["#5A3426","#C98A3C","#E9C79A"]},
+  {n:"Красный бархат",d:"Бисквит на пахте с какао, сливочный крем-чиз",p:2100,c:["#A11D2E","#FBF3EE","#A11D2E"]},
+  {n:"Фисташка и малина",d:"Фисташковый бисквит, малиновое кули, крем на белом шоколаде",p:2400,c:["#9CBF7A","#D6336C","#F4EEDC"]}
+];
+const decor=[{n:"Свежие ягоды",p:500},{n:"Цветы из крема",p:600},{n:"Фигурки из мастики",p:800},{n:"Шоколадные подтёки",p:300}];
+const rub=v=>v.toLocaleString("ru-RU")+" ₽";
+const $=id=>document.getElementById(id);
+
+$("fillGrid").innerHTML=fills.map(f=>`<div class="fill"><div class="swatch">${f.c.map(c=>`<i style="background:${c}"></i>`).join("")}</div><h3>${f.n}</h3><p>${f.d}</p><div class="price">${rub(f.p)} <small>/ кг</small></div></div>`).join("");
+$("cFill").innerHTML=fills.map((f,i)=>`<option value="${i}">${f.n} · ${rub(f.p)}/кг</option>`).join("");
+$("cDecor").innerHTML=decor.map((d,i)=>`<label><input type="checkbox" id="d${i}" value="${i}"> ${d.n} +${rub(d.p)}</label>`).join("");
+
+function calc(){
+  const f=fills[$("cFill").value], w=+$("cWeight").value;
+  const chosen=decor.filter((_,i)=>$("d"+i).checked);
+  const base=Math.round(f.p*w), extra=chosen.reduce((s,d)=>s+d.p,0);
+  $("wOut").textContent=w.toString().replace(".",",")+" кг";
+  $("gOut").textContent=Math.floor(w/0.2)+"–"+Math.floor(w/0.15);
+  $("sum").textContent=rub(base+extra);
+  $("breakdown").innerHTML=`<li>${f.n}, ${w.toString().replace(".",",")} кг — ${rub(base)}</li>`+chosen.map(d=>`<li>${d.n} — ${rub(d.p)}</li>`).join("");
+  return {f,w,chosen,total:base+extra};
+}
+document.querySelector(".calc").addEventListener("input",calc);
+calc();
+
+const min=new Date();min.setDate(min.getDate()+3);
+$("oDate").min=min.toISOString().slice(0,10);
+$("oDate").value=$("oDate").min;
+
+$("orderForm").addEventListener("submit",e=>{
+  e.preventDefault();
+  const c=calc();
+  const r=$("result");
+  r.hidden=false;
+  r.textContent=`Спасибо, ${$("oName").value}! Это демо-сайт, поэтому заявка никуда не отправлена.\nНа настоящем сайте она пришла бы владельцу в Telegram:\n\n${$("oEvent").value}, ${new Date($("oDate").value).toLocaleDateString("ru-RU")}\n${c.f.n}, ${String(c.w).replace(".",",")} кг${c.chosen.length?"\nУкрашения: "+c.chosen.map(d=>d.n).join(", "):""}\nИтого: ${rub(c.total)}\nТелефон: ${$("oPhone").value}${$("oNote").value?"\nПожелания: "+$("oNote").value:""}`;
+  r.scrollIntoView({behavior:"smooth",block:"nearest"});
+});
+</script>
+
+</body>
+</html>
