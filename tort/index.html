@@ -39,7 +39,8 @@ header.top{padding-block:16px;display:flex;justify-content:space-between;align-i
 .btn{display:inline-block;background:var(--accent);color:var(--accent-ink);font-weight:700;border:0;border-radius:999px;padding:12px 22px;font-size:15px;text-decoration:none;cursor:pointer;font-family:var(--body)}
 .btn:focus-visible,input:focus-visible,select:focus-visible{outline:3px solid var(--pista);outline-offset:2px}
 .btn.ghost{background:transparent;color:var(--fg);border:2px solid var(--line)}
-.hero{display:grid;grid-template-columns:1.2fr 1fr;gap:32px;align-items:center;padding-block:28px 48px}
+.hero{display:grid;grid-template-columns:1.2fr 1fr;gap:32px;align-items:center;padding-block:40px 40px}
+.hero h1{color:#fff}
 .hero h1{font-size:clamp(32px,6vw,58px)}
 .hero h1 em{font-style:normal;color:var(--accent)}
 .hero p.lead{color:var(--muted);font-size:18px;margin-top:16px;max-width:34ch}
@@ -52,7 +53,7 @@ header.top{padding-block:16px;display:flex;justify-content:space-between;align-i
 .t3{width:110px;height:62px;background:var(--cream);border-bottom:10px solid var(--choc)}
 .t2{width:170px;height:70px;background:var(--accent);border-bottom:10px solid var(--choc);margin-top:-2px}
 .t1{width:230px;height:78px;background:var(--cream);border-bottom:10px solid var(--choc);margin-top:-2px}
-.plate{width:280px;height:12px;border-radius:50%;background:var(--line);margin-top:-2px}
+.plate{width:280px;height:12px;border-radius:50%;background:rgba(255,255,255,.18);margin-top:-2px}
 .drip{position:absolute;top:0;left:0;right:0;height:22px;background:radial-gradient(circle at 12px 0,var(--choc) 11px,transparent 12px) 0 0/24px 22px repeat-x;opacity:.85}
 .berry{position:absolute;width:18px;height:18px;border-radius:50%;background:var(--accent);top:-12px;box-shadow:inset -3px -3px 0 rgba(0,0,0,.18)}
 .t2 .berry{background:var(--pista)}
@@ -94,13 +95,25 @@ footer{border-top:1px solid var(--line);padding-block:24px;color:var(--muted);fo
 }
 @media (prefers-reduced-motion:no-preference){.cake .berry{animation:bob 3s ease-in-out infinite}.cake .berry:nth-child(2n){animation-delay:.6s}}
 @keyframes bob{50%{transform:translateY(-3px)}}
+
+/* тёмный первый экран */
+.band{position:relative;color:#F4EFEC;background:radial-gradient(900px 480px at 85% -10%,#E2457F55,transparent 70%),radial-gradient(600px 400px at 0% 100%,#E2457F22,transparent 70%),#1B1216;
+  --fg:#F4EFEC;--muted:#C2B8B3;--line:rgba(255,255,255,.14);--surface:rgba(255,255,255,.06);overflow:hidden}
+.band a.btn.ghost,.band .btn.ghost{color:#F4EFEC;border-color:rgba(255,255,255,.35);background:transparent}
+.trust{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px;border-top:1px solid var(--line);padding-block:22px 28px;margin-top:8px}
+.trust div{display:flex;gap:12px;align-items:center;min-width:0}
+.trust i{flex:none;width:42px;height:42px;border-radius:12px;background:rgba(255,255,255,.08);display:grid;place-items:center}
+.trust svg{width:22px;height:22px;fill:none;stroke:#E2457F;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.trust b{display:block;font-size:15px;color:#fff}
+.trust span{font-size:13px;color:var(--muted)}
+@media (max-width:720px){.trust{grid-template-columns:repeat(2,minmax(0,1fr))}}
 </style>
 
 </head>
 <body>
 <div class="demo">Демо-сайт для портфолио · бизнес и контакты вымышленные</div>
 
-<div class="wrap">
+<div class="band"><div class="wrap">
   <header class="top">
     <div class="logo">Торты <span>от Ани</span></div>
     <a class="btn ghost" href="#order">Заказать торт</a>
@@ -127,7 +140,8 @@ footer{border-top:1px solid var(--line);padding-block:24px;color:var(--muted);fo
       <div class="plate"></div>
     </div>
   </div>
-</div>
+  <div class="trust"><div><i><svg viewBox="0 0 24 24"><path d="M5 19c0-8 6-14 15-14 0 9-6 15-14 15"/><path d="M5 19l7-7"/></svg></i><p style="margin:0"><b>Натуральный состав</b><span>масло, сливки, ягоды</span></p></div><div><i><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg></i><p style="margin:0"><b>Заказ за 3 дня</b><span>или срочно по договорённости</span></p></div><div><i><svg viewBox="0 0 24 24"><path d="M3 6h11v9H3zM14 9h4l3 3v3h-7"/><circle cx="7" cy="17" r="2"/><circle cx="17" cy="17" r="2"/></svg></i><p style="margin:0"><b>Доставка 300 ₽</b><span>по городу в день праздника</span></p></div><div><i><svg viewBox="0 0 24 24"><path d="M4 5h16v11H9l-5 4z"/></svg></i><p style="margin:0"><b>Ответ за час</b><span>в Telegram и WhatsApp</span></p></div></div>
+</div></div>
 
 <section id="fillings"><div class="wrap">
   <h2>Начинки</h2>

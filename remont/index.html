@@ -66,10 +66,29 @@ textarea{min-height:80px}
 .done{margin-top:12px;padding:12px;border-radius:8px;border:2px dashed var(--ok);white-space:pre-wrap}
 footer{padding-block:24px;color:var(--muted);font-size:14px;border-top:1px solid var(--line)}
 @media (max-width:720px){.hero,.two{grid-template-columns:1fr}}
+
+/* тёмный первый экран */
+.band{position:relative;color:#F4EFEC;background:radial-gradient(900px 480px at 85% -10%,#E2A33A55,transparent 70%),radial-gradient(600px 400px at 0% 100%,#E2A33A22,transparent 70%),#151B20;
+  --fg:#F4EFEC;--muted:#C2B8B3;--line:rgba(255,255,255,.14);--surface:rgba(255,255,255,.06);overflow:hidden}
+.band a.btn.ghost,.band .btn.ghost{color:#F4EFEC;border-color:rgba(255,255,255,.35);background:transparent}
+.trust{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px;border-top:1px solid var(--line);padding-block:22px 28px;margin-top:8px}
+.trust div{display:flex;gap:12px;align-items:center;min-width:0}
+.trust i{flex:none;width:42px;height:42px;border-radius:12px;background:rgba(255,255,255,.08);display:grid;place-items:center}
+.trust svg{width:22px;height:22px;fill:none;stroke:#E2A33A;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.trust b{display:block;font-size:15px;color:#fff}
+.trust span{font-size:13px;color:var(--muted)}
+@media (max-width:720px){.trust{grid-template-columns:repeat(2,minmax(0,1fr))}}
+
+.band .card{background:rgba(255,255,255,.06);border-color:rgba(255,255,255,.14)}
+.band .tags span{border-color:rgba(255,255,255,.5)}
+.band .hours .today{color:var(--amber)}
+.band .hero h1{color:#fff}.band .hero h1 span{color:var(--amber)}
+.tool{position:absolute;right:-40px;top:40px;width:420px;opacity:.07;pointer-events:none}
 </style>
 </head>
 <body>
 <div class="demo">Демо-сайт для портфолио · мастерская и контакты вымышленные</div>
+<div class="band">
 <header class="sign"><div class="wrap">
   <div class="logo">Мастерская на Ленина</div>
   <span class="status" id="status"><i></i><span id="statusText">Проверяю время…</span></span>
@@ -88,7 +107,8 @@ footer{padding-block:24px;color:var(--muted);font-size:14px;border-top:1px solid
       <p class="note">ул. Ленина, 40 · вход со двора, вывеска «Ремонт»</p>
     </div>
   </div>
-</div>
+  <div class="trust"><div><i><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg></i><p style="margin:0"><b>15 минут</b><span>набойки и батарейка при вас</span></p></div><div><i><svg viewBox="0 0 24 24"><path d="M12 3l8 3v6c0 5-3.5 8-8 9-4.5-1-8-4-8-9V6z"/><path d="M8.5 12l2.5 2.5 4.5-5"/></svg></i><p style="margin:0"><b>Гарантия 30 дней</b><span>на любой ремонт</span></p></div><div><i><svg viewBox="0 0 24 24"><circle cx="8" cy="15" r="4"/><path d="M11 12l9-9M17 6l2 2"/></svg></i><p style="margin:0"><b>Ключи и домофон</b><span>дубликат за 5 минут</span></p></div><div><i><svg viewBox="0 0 24 24"><path d="M12 3l2.7 5.6 6.1.9-4.4 4.3 1 6.1L12 17l-5.4 2.9 1-6.1L3.2 9.5l6.1-.9z"/></svg></i><p style="margin:0"><b>Осмотр бесплатно</b><span>цена до начала работ</span></p></div></div>
+</div></div>
 
 <section id="price"><div class="wrap">
   <h2>Цены</h2>
