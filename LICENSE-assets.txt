@@ -1,1 +1,2 @@
 assets3d/*.png, assets2d/*.svg — Microsoft Fluent Emoji (https://github.com/microsoft/fluentui-emoji), MIT License, Copyright (c) Microsoft Corporation.
+photos/*.jpg — github.com/yavuzceliker/sample-images (originally Pixabay.com, modified), Pixabay Content License: free for commercial use, no attribution required; do not sell or redistribute unaltered copies as standalone files.

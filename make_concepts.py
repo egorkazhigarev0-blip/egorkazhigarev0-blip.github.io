@@ -32,6 +32,45 @@ def img(slug):
             _cache[key] = ""
     return _cache[key]
 
+PHOTOS = os.environ.get("PHOTOS_DIR", os.path.join(HERE, "photos"))
+try:
+    PIDX = json.load(open(os.path.join(PHOTOS, "index.json")))
+except Exception:
+    PIDX = {}
+_pc = {}
+def photo_uri(i, w=1100):
+    """Реалистичное фото (Pixabay, свободная лицензия), уменьшенное и встроенное в страницу."""
+    key = (i, w)
+    if key not in _pc:
+        from PIL import Image
+        import io
+        im = Image.open(os.path.join(PHOTOS, f"p{i}.jpg")).convert("RGB"); im.thumbnail((w, w))
+        b = io.BytesIO(); im.save(b, "JPEG", quality=84)
+        _pc[key] = "data:image/jpeg;base64," + base64.b64encode(b.getvalue()).decode()
+    return _pc[key]
+
+def photos_for(l, k):
+    """Свой набор фото для каждого бизнеса: сдвиг по id, чтобы у соседних клиентов были разные кадры.
+    Фото только в первом варианте; второй остаётся иллюстрированным для сравнения стилей."""
+    if VARIANT != 1 or os.environ.get("NO_PHOTOS"): return []
+    ids = PIDX.get(k) or []
+    if not ids: return []
+    r = h(l["id"], "p")
+    hero = ids[r % min(3, len(ids))]
+    rest = [i for i in ids if i != hero]
+    if rest: k2 = r % len(rest); rest = rest[k2:] + rest[:k2]
+    return [hero] + rest
+
+def photo_hero(ph, ac, n, l, shape="22px", ratio="4/4.4"):
+    """Крупное фото + стеклянная карточка с рейтингом/записью + маленький 3D-значок: смесь фото и иллюстрации."""
+    r, c = l.get("rating"), l.get("reviews")
+    if r and c and c >= 5:
+        card = f'<b>★ {float(r):.1f}</b><span>{c} {plural(c, "оценка", "оценки", "оценок")}</span>'.replace(".", ",", 1)
+    else:
+        card = '<b>24/7</b><span>запись онлайн</span>'
+    return (f'<div class="phero" style="border-radius:{shape};aspect-ratio:{ratio}"><img class="pimg" src="{photo_uri(ph[0])}">'
+            f'<div class="glass">{card}</div><span class="pbadge"><img src="{img(n["hero"][0])}"></span></div>')
+
 def niche_of(l):
     for text in (str(l.get("niche", "")).lower(), str(l.get("name", "")).lower()):
         for key, rx in RULES:
@@ -92,6 +131,20 @@ ART_CSS = """.art3d{position:relative;width:100%;aspect-ratio:1/1;max-width:440p
 .art3d .main{width:54%;left:23%;top:19%}
 .art3d .second{width:21%;transform:rotate(-8deg)}
 .art3d .d1{width:13%;transform:rotate(10deg)}.art3d .d2{width:11%;transform:rotate(-12deg);opacity:.95}
+.phero{position:relative;overflow:hidden;width:100%;box-shadow:0 30px 60px -30px rgba(0,0,0,.45)}
+.phero .pimg{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.phero::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(0,0,0,0) 55%,rgba(0,0,0,.28))}
+.phero .glass{position:absolute;left:16px;bottom:16px;z-index:2;display:flex;flex-direction:column;gap:2px;padding:12px 16px;border-radius:16px;background:rgba(255,255,255,.82);backdrop-filter:blur(10px);color:#1d1d1f;box-shadow:0 10px 30px -10px rgba(0,0,0,.35)}
+.phero .glass b{font-size:20px;font-family:"Manrope",sans-serif}.phero .glass span{font-size:12px;color:#55555c;font-weight:700}
+.phero .pbadge{position:absolute;right:16px;top:16px;z-index:2;width:58px;height:58px;border-radius:18px;display:grid;place-items:center;background:rgba(255,255,255,.85);backdrop-filter:blur(8px);box-shadow:0 10px 24px -10px rgba(0,0,0,.4)}
+.phero .pbadge img{width:36px;filter:drop-shadow(0 3px 4px rgba(0,0,0,.25))}
+.ptile{position:relative;overflow:hidden;padding:0!important;justify-content:flex-end!important}
+.ptile img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.ptile span{position:relative;z-index:1;color:#fff;padding:12px 14px;background:linear-gradient(0deg,rgba(0,0,0,.6),rgba(0,0,0,0));font-weight:700}
+.ordl{order:-1}@media(max-width:720px){.ordl{order:0}}
+.gal{display:grid;grid-template-columns:2fr 1fr 1fr;gap:12px}.gal div{border-radius:16px;overflow:hidden;aspect-ratio:4/3.2;border:1px solid var(--ln)}.gal div:first-child{grid-row:span 2;aspect-ratio:auto}
+.gal img{width:100%;height:100%;object-fit:cover;display:block}
+@media(max-width:720px){.gal{grid-template-columns:1fr 1fr}.gal div:first-child{grid-column:span 2;grid-row:auto;aspect-ratio:4/3}}
 .ob{display:block;filter:drop-shadow(0 10px 14px rgba(0,0,0,.18))}
 .brand{display:flex;align-items:center;gap:12px;white-space:nowrap}
 .brand .mark{width:42px;height:42px;border-radius:13px;display:grid;place-items:center;flex:none;background:linear-gradient(145deg,var(--ac),var(--ac2));box-shadow:0 6px 16px -6px var(--ac)}
@@ -122,11 +175,15 @@ footer{{margin-top:44px;border-top:1px solid var(--ln);color:var(--mu);padding:2
 
 HEAD = '<!doctype html><html lang="ru"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;700&family=Unbounded:wght@600&family=Oswald:wght@500;600&family=Cormorant:ital,wght@0,600;1,600&display=swap">'
 
+def gallery(ph):
+    return '<section><h2>Работы</h2><div class="gal">' + "".join(f'<div><img src="{photo_uri(i, 900)}"></div>' for i in (ph[1:4] if len(ph) >= 4 else ph[:3])) + '</div></section>'
+
 def contact_box(addr, cta, radius, title_css=""):
     return f'''<section><div class="contact"><div class="box"><h2 style="margin:0;{title_css}">Контакты</h2><p>{addr}</p><p class="mu">Telegram · WhatsApp · ВКонтакте</p><span class="cta" style="align-self:flex-start;border-radius:{radius};padding:12px 18px">{cta}</span></div><div class="map"><img src="{img("round_pushpin")}"></div></div></section>'''
 
 def industrial(l, k, P, name, head, svcs, addr, v):
     n = N[k]; ac, ac2, bg, sf, fg, mu, ln, theme = P
+    ph = photos_for(l, k)
     rows = "".join(f'<div class="row"><span>{html.escape(a)}<small>{html.escape(b)}</small></span><span class="dots"></span><b>{html.escape(c)}</b></div>' for a, b, c in svcs)
     badges = "".join(f"<span>{t}</span>" for t in n.get("badges", []))
     steps = "".join(f'<div><b>{i}</b><strong>{html.escape(t)}</strong><span class="mu">{html.escape(d)}</span></div>' for i, (t, d) in enumerate((n.get("steps") or [("Выберите", "услугу"), ("Оставьте заявку", "на сайте"), ("Подтверждение", "в мессенджере")])[:3], 1))
@@ -158,20 +215,25 @@ section{{padding:34px 0 0}}
 <div class="top">{logo(name, n, 'font-family:Oswald,sans-serif;font-size:28px;text-transform:uppercase;letter-spacing:.05em')}<span class="pill"><i></i>Открыто сейчас</span></div>
 <div class="hero"><div><p class="mu" style="font-weight:700;letter-spacing:.1em;text-transform:uppercase;font-size:13px">{html.escape(l["city"])} · {html.escape(l["addr"])}</p>
 <h1 style="margin-top:12px">{html.escape(head)}</h1><p class="lead">{lead}</p>
-<div class="badges">{badges}</div>{rating_chip(l)}<div class="btns"><span class="cta">{n['cta']}</span><span class="ghost">Цены</span></div></div>
-<div class="panel">{art(n['hero'], ac, ac2, theme, v)}</div></div>
+<div class="badges">{badges}</div>{'' if ph else rating_chip(l)}<div class="btns"><span class="cta">{n['cta']}</span><span class="ghost">Цены</span></div></div>
+<div class="panel"{' style="padding:0;border:0;background:none"' if ph else ''}>{photo_hero(ph, ac, n, l, '22px') if ph else art(n['hero'], ac, ac2, theme, v)}</div></div>
 <section><h2>Цены</h2><div class="table">{rows}</div></section>
+{gallery(ph) if len(ph) >= 3 else ''}
 <section><h2>{n.get('steps_title', 'Как это работает')}</h2><div class="steps">{steps}</div></section>
 {contact_box(addr, n['cta'], '8px')}
 <footer>{name} · {html.escape(l["city"])}</footer></div></body></html>"""
 
 def elegant(l, k, P, name, head, svcs, addr, v):
     n = N[k]; ac, ac2, bg, sf, fg, mu, ln, theme = P
+    ph = photos_for(l, k)
     words = head.split(" ")
     h1 = html.escape(" ".join(words[:-1])) + f' <em>{html.escape(words[-1])}</em>'
     items = "".join(f'<div class="item"><span class="t">{html.escape(a)}<small>{html.escape(b)}</small></span><span class="dots"></span><span class="p">{html.escape(c)}</span></div>' for a, b, c in svcs)
     tiles = "".join(f'<div class="tile" style="background:linear-gradient(160deg,{c1}33,{c2}12)"><img class="ob" src="{img(s)}"><span>{html.escape(t)}</span></div>'
                     for (s, t), (c1, c2) in zip(n.get("tiles") or [(n["hero"][i % 4], svcs[i % len(svcs)][0]) for i in range(4)], [(ac, ac2), (ac2, ac), (ac, ac), (ac2, ac2)]))
+    if len(ph) >= 2:
+        caps = [t for _, t in (n.get("tiles") or [])] or [x[0] for x in svcs]
+        tiles = "".join(f'<div class="tile ptile"><img src="{photo_uri(i, 700)}"></div>' for i in (ph[1:] + ph[:1])[:4])
     frame = "border-radius:240px 240px 28px 28px" if v == 0 else "border-radius:50%"
     lead = n.get("lead", "Выберите услугу и удобное время прямо на сайте. Подтверждение придёт в Telegram.")
     return HEAD + f"""<style>{base_css(P, ac + '22')}
@@ -199,8 +261,8 @@ section{{padding:36px 0 0}}h2{{font-family:"Cormorant",serif;font-weight:600;fon
 <nav><div class="l"><span>Услуги</span><span>Работы</span><span>Контакты</span></div>{logo(name, n, 'font-family:Cormorant,serif;font-size:34px;font-weight:600')}<div class="r"><span class="cta">{n['cta']}</span></div></nav>
 <div class="hero"><div><p class="eyebrow">{html.escape(l["city"])} · {html.escape(n['label'])}</p><h1>{h1}</h1>
 <p class="lead">{lead}</p>
-<div class="btns"><span class="cta">{n['cta']}</span><span class="ghost">Услуги и цены</span></div>{rating_chip(l)}</div>
-<div class="frame">{art(n['hero'], ac, ac2, theme, v)}</div></div>
+<div class="btns"><span class="cta">{n['cta']}</span><span class="ghost">Услуги и цены</span></div>{'' if ph else rating_chip(l)}</div>
+{('<div class="' + ('ordl' if v else '') + '">' + photo_hero(ph, ac, n, l, '240px 240px 28px 28px', '1/1.12') + '</div>') if ph else '<div class="frame">' + art(n['hero'], ac, ac2, theme, v) + '</div>'}</div>
 <section><h2>Услуги <em>и цены</em></h2><div class="list">{items}</div></section>
 <section><h2>Наши <em>работы</em></h2><div class="tiles">{tiles}</div></section>
 {contact_box(addr, n['cta'], '999px', 'font-family:Cormorant,serif;font-size:36px')}
@@ -208,6 +270,7 @@ section{{padding:36px 0 0}}h2{{font-family:"Cormorant",serif;font-weight:600;fon
 
 def friendly(l, k, P, name, head, svcs, addr, v):
     n = N[k]; ac, ac2, bg, sf, fg, mu, ln, theme = P
+    ph = photos_for(l, k)
     cols = [(ac, ac2), (ac2, ac), (ac, "#E8B86A"), (ac2, "#E8B86A")]
     cards = "".join(f'<div class="card"><div class="sw" style="background:linear-gradient(160deg,{c1}30,{c2}14)"><img class="ob" src="{img(s)}"></div><b>{html.escape(a)}</b><span class="mu">{html.escape(b)}</span><b class="pr">{html.escape(c)}</b></div>'
                     for (a, b, c), s, (c1, c2) in zip(svcs, n.get("cards") or n["hero"], cols))
@@ -228,16 +291,21 @@ section{{padding:36px 0 0}}h2{{font-family:"Unbounded",sans-serif;font-size:26px
 .steps{{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px}}.steps div{{display:flex;flex-direction:column;gap:6px}}
 .steps i{{width:44px;height:44px;border-radius:50%;background:var(--ac);color:#fff;display:grid;place-items:center;font-style:normal;font-weight:700;font-family:"Unbounded",sans-serif}}
 .contact{{display:grid;grid-template-columns:1fr 1.3fr;gap:14px}}.box{{background:var(--sf);border:1px solid var(--ln);border-radius:24px;padding:22px;display:flex;flex-direction:column;gap:8px}}
-@media(max-width:720px){{.heroc,.contact{{grid-template-columns:1fr}}.cards,.steps{{grid-template-columns:1fr 1fr}}.heroc{{padding:22px}}}}
+@media(max-width:720px){{.top>.cta{{display:none}}.heroc,.contact{{grid-template-columns:1fr}}.cards,.steps{{grid-template-columns:1fr 1fr}}.heroc{{padding:22px}}}}
 </style></head><body><div class="wrap">
 <div class="top">{logo(name, n, 'font-family:Unbounded,sans-serif;font-size:22px')}<span class="cta">{n['cta']}</span></div>
 <div class="heroc"><div><h1>{html.escape(head)}</h1><p class="lead">{n.get('lead', '')}</p>
 <div class="btns"><span class="cta">{n['cta']}</span><span class="ghost">{n.get('menu_title', 'Меню')} и цены</span></div>
-<div class="chips">{chips}</div>{rating_chip(l)}</div><div>{art(n['hero'], ac, ac2, theme, v)}</div></div>
+<div class="chips">{chips}</div>{'' if ph else rating_chip(l)}</div><div>{photo_hero(ph, ac, n, l, '28px', '1/1.05') if ph else art(n['hero'], ac, ac2, theme, v)}</div></div>
 <section><h2>{n.get('menu_title', 'Меню')}</h2><div class="cards">{cards}</div></section>
+{gallery(ph) if len(ph) >= 3 else ''}
 <section><h2>Как заказать</h2><div class="steps">{steps}</div></section>
 {contact_box(addr, n['cta'], '999px')}
 <footer>{name} · {html.escape(l["city"])}</footer></div></body></html>"""
+
+def tidy(t):
+    """Неразрывный пробел после коротких слов (с, в, и, на...), чтобы предлог не висел в конце строки."""
+    return re.sub(r"(?<![\w-])(\w{1,2}) ", lambda m: m.group(1) + "\u00a0", t)
 
 def page(l):
     k = niche_of(l); n = N[k]; P = palette(l, k)
@@ -245,11 +313,16 @@ def page(l):
     head = n["heads"][(h(l["id"], "h") + VARIANT - 1) % len(n["heads"])]
     motto = str(l.get("motto") or "").strip().strip("«»\"").rstrip(".!")
     if VARIANT == 1 and motto and len(motto) <= 48: head = motto  # девиз самого бизнеса — самый личный заголовок
+    head = tidy(head)
     addr = html.escape(f'{l["city"]}, {l["addr"]}')
     v = (h(l["id"], "v") + VARIANT - 1) % 2
     lay = n["layout"] if VARIANT == 1 else {"industrial": "elegant", "elegant": "friendly", "friendly": "elegant"}[n["layout"]]
     fn = {"industrial": industrial, "elegant": elegant, "friendly": friendly}[lay]
-    return fn(l, k, P, name, head, services(l, k), addr, v), k, P
+    doc = fn(l, k, P, name, head, services(l, k), addr, v)
+    longest = max(len(w) for w in re.split(r"[\s\u00a0]+", head))
+    if (lay == "friendly" and longest >= 11) or longest >= 14:  # длинное слово не должно вылезать за край
+        doc = doc.replace("</head>", "<style>h1{font-size:clamp(22px,3.2vw,36px)!important}@media(max-width:720px){h1{font-size:24px!important}}</style></head>", 1)
+    return doc, k, P
 
 def render(leads):
     jobs, meta = [], {}
