@@ -27,7 +27,7 @@ def _shadow(canvas, box, r=18, blur=22, alpha=110):
 def _hex(c):
     c = c.lstrip("#"); return tuple(int(c[i:i + 2], 16) for i in (0, 2, 4))
 
-def cover(desktop, full, phone, out, title, sub, accent="#E2457F", bg="#141015", note=None):
+def cover(desktop, full, phone, out, title, sub, accent="#E2457F", bg="#141015", note=None, swatches=None):
     W, H = 1600, 1000
     base = Image.new("RGBA", (W, H), _hex(bg) + (255,))
     # мягкое свечение акцентом
@@ -78,6 +78,13 @@ def cover(desktop, full, phone, out, title, sub, accent="#E2457F", bg="#141015",
     pim = pim.resize((pw, int(pim.height * pw / pim.width)), Image.LANCZOS).crop((0, 0, pw, ph))
     base.alpha_composite(_round(pim, 32), (px, py))
     if note:
-        fn = _font(REG, 18); nw = d.textlength(note, font=fn)
-        d.text(((W - nw) / 2, H - 34), note, fill=(255, 255, 255, 150), font=fn)
+        fn = _font(REG, 19); nw = d.textlength(note, font=fn)
+        sw = swatches or []
+        r, gap = 9, 7
+        sww = len(sw) * (2 * r + gap) + (14 if sw else 0)
+        x0 = (W - nw - sww) / 2
+        for i, c in enumerate(sw):
+            cx = x0 + r + i * (2 * r + gap); cy = H - 24
+            d.ellipse([cx - r, cy - r, cx + r, cy + r], fill=_hex(c) + (255,), outline=(255, 255, 255, 120), width=2)
+        d.text((x0 + sww, H - 36), note, fill=(255, 255, 255, 175), font=fn)
     base.convert("RGB").save(out, "JPEG", quality=92, optimize=True)
