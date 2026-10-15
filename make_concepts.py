@@ -49,6 +49,9 @@ def photo_uri(i, w=1100):
         _pc[key] = "data:image/jpeg;base64," + base64.b64encode(b.getvalue()).decode()
     return _pc[key]
 
+HERO_POOL = {"pets": 12, "flowers": 7, "cake": 4, "nails": 3, "salon": 4, "brows": 3, "coffee": 4, "auto": 5, "massage": 4, "fitness": 3}
+USED_HERO = set()
+
 def photos_for(l, k):
     """Свой набор фото для каждого бизнеса: сдвиг по id, чтобы у соседних клиентов были разные кадры.
     Фото только в первом варианте; второй остаётся иллюстрированным для сравнения стилей."""
@@ -56,7 +59,12 @@ def photos_for(l, k):
     ids = PIDX.get(k) or []
     if not ids: return []
     r = h(l["id"], "p")
-    hero = ids[r % min(3, len(ids))]
+    pool = ids[:HERO_POOL.get(k, 3)]
+    # разные бизнесы в одном запуске получают разные главные фото (пока хватает кадров)
+    start = r % len(pool)
+    order = pool[start:] + pool[:start]
+    hero = next((i for i in order if i not in USED_HERO), order[0])
+    USED_HERO.add(hero)
     rest = [i for i in ids if i != hero]
     if rest: k2 = r % len(rest); rest = rest[k2:] + rest[:k2]
     return [hero] + rest
