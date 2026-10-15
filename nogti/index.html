@@ -10,15 +10,13 @@
 <style>
 /* Layout: премиальная студия — крупная типографика, палитра оттенков лака, услуги, онлайн-запись по шагам, работы, мастера, FAQ */
 :root{
-  --bg:#F6F3F1; --surface:#FFFFFF; --fg:#2B2230; --muted:#6F6573; --line:#E4DCE0;
-  --accent:#7A3E6E; --accent-ink:#FFFFFF; --sage:#8FA487; --soft:#EFE6EC;
+  --bg:#1F1A21; --surface:#29222C; --fg:#F2EAF0; --muted:#B7A8B3; --line:#3A3140;
+  --accent:#D48AC0; --accent-ink:#1F1A21; --sage:#9FBF97; --soft:#342A37;
   --display:"Cormorant","Georgia","Times New Roman",serif;
   --body:"Manrope",system-ui,-apple-system,"Segoe UI",sans-serif;
-  color-scheme:light;
+  color-scheme:dark;
 }
-@media (prefers-color-scheme:dark){:root{
-  --bg:#1A1519; --surface:#241D23; --fg:#F1E9EE; --muted:#B3A6AF; --line:#3A2F38;
-  --accent:#D59BC7; --accent-ink:#1A1519; --sage:#A9BFA1; --soft:#34262F; color-scheme:dark}}
+
 *{box-sizing:border-box}
 html,body{margin:0}
 html{scroll-behavior:smooth}
@@ -30,7 +28,7 @@ h2{font-size:clamp(34px,5.5vw,52px)}
 h2 em,h1 em{font-style:italic;color:var(--accent)}
 p{margin:0}
 .eyebrow{font-size:12px;text-transform:uppercase;letter-spacing:.14em;color:var(--muted);font-weight:700}
-.demo{background:var(--fg);color:var(--bg);text-align:center;font-size:13px;padding-block:6px}
+.demo{background:#151116;color:#B7A8B3;text-align:center;font-size:13px;padding-block:6px}
 nav.top{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:color-mix(in srgb,var(--bg) 88%,transparent);backdrop-filter:blur(8px);border-bottom:1px solid var(--line)}
 nav.top .wrap{display:flex;justify-content:space-between;align-items:center;gap:12px;padding-block:12px}
 .logo{font-family:var(--display);font-size:24px;font-weight:600}
@@ -126,8 +124,7 @@ footer{border-top:1px solid var(--line);padding-block:24px;color:var(--muted);fo
 @media (max-width:520px){.fields{grid-template-columns:1fr}.palette{gap:8px}}
 
 /* тёмный первый экран */
-.band{position:relative;color:#F4EFEC;background:radial-gradient(900px 480px at 85% -10%,#D07AB855,transparent 70%),radial-gradient(600px 400px at 0% 100%,#D07AB822,transparent 70%),#1A1319;
-  --fg:#F4EFEC;--muted:#C2B8B3;--line:rgba(255,255,255,.14);--surface:rgba(255,255,255,.06);overflow:hidden}
+.band{position:relative;background:radial-gradient(800px 460px at 85% 0%,rgba(212,138,192,.18),transparent 70%),var(--bg);color:var(--fg)}
 .band a.btn.ghost,.band .btn.ghost{color:#F4EFEC;border-color:rgba(255,255,255,.35);background:transparent}
 .trust{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px;border-top:1px solid var(--line);padding-block:22px 28px;margin-top:8px}
 .trust div{display:flex;gap:12px;align-items:center;min-width:0}
@@ -142,6 +139,8 @@ footer{border-top:1px solid var(--line);padding-block:24px;color:var(--muted);fo
 .band .hero h1{color:#fff}.band .hero h1 em{color:#E7A6D6}
 .band .eyebrow{color:#C9B3C2}
 .band .facts b{color:#fff}
+.art .illus{width:100%;max-width:460px;display:block;margin:0 auto}
+.hero>*{min-width:0}
 </style>
 </head>
 <body>
@@ -165,12 +164,19 @@ footer{border-top:1px solid var(--line);padding-block:24px;color:var(--muted);fo
       <div><b>120+</b><span>оттенков в палитре</span></div>
     </div>
   </div>
-  <div class="palette" aria-hidden="true">
-    <div class="bottle" style="background:#7A3E6E"><span>№ 14</span></div>
-    <div class="bottle" style="background:#C98E86"><span>№ 03</span></div>
-    <div class="bottle" style="background:#8FA487"><span>№ 27</span></div>
-    <div class="bottle" style="background:#2B2230;box-shadow:inset 0 0 0 1px rgba(255,255,255,.25)"><span>№ 40</span></div>
-  </div>
+  <div class="art"><svg class="illus" viewBox="0 0 480 400" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+<defs><radialGradient id="g993989" cx="50%" cy="45%" r="55%"><stop offset="0" stop-color="#342A37" stop-opacity="1"/><stop offset="1" stop-color="#342A37" stop-opacity="0"/></radialGradient></defs>
+<circle cx="240" cy="200" r="190" fill="url(#g993989)"/>
+<ellipse cx="240" cy="318" rx="170" ry="14" fill="#120E13" opacity=".18"/>
+<rect x="124" y="98" width="28" height="52" rx="6" fill="#120E13"/>
+<path d="M108 162q0-14 14-14h32q14 0 14 14v126q0 12-12 12h-36q-12 0-12-12z" fill="#D48AC0"/>
+<rect x="118" y="170" width="8" height="100" rx="4" fill="#fff" opacity=".35"/><rect x="212" y="68" width="28" height="52" rx="6" fill="#120E13"/>
+<path d="M196 132q0-14 14-14h32q14 0 14 14v156q0 12-12 12h-36q-12 0-12-12z" fill="#9FBF97"/>
+<rect x="206" y="140" width="8" height="130" rx="4" fill="#fff" opacity=".35"/><rect x="300" y="108" width="28" height="52" rx="6" fill="#120E13"/>
+<path d="M284 172q0-14 14-14h32q14 0 14 14v116q0 12-12 12h-36q-12 0-12-12z" fill="#D9A79B"/>
+<rect x="294" y="180" width="8" height="90" rx="4" fill="#fff" opacity=".35"/>
+<circle cx="372" cy="150" r="26" fill="#D48AC0" opacity=".9"/><circle cx="398" cy="196" r="18" fill="#9FBF97"/><circle cx="360" cy="226" r="12" fill="#D9A79B"/>
+<path d="M86 120l5 11 11 5-11 5-5 11-5-11-11-5 11-5z" fill="#9FBF97"/></svg></div>
 </header>
 <div class="wrap"><div class="trust"><div><i><svg viewBox="0 0 24 24"><path d="M12 3l8 3v6c0 5-3.5 8-8 9-4.5-1-8-4-8-9V6z"/><path d="M8.5 12l2.5 2.5 4.5-5"/></svg></i><p style="margin:0"><b>Стерильно</b><span>крафт-пакет вскрываем при вас</span></p></div><div><i><svg viewBox="0 0 24 24"><path d="M12 3l2.7 5.6 6.1.9-4.4 4.3 1 6.1L12 17l-5.4 2.9 1-6.1L3.2 9.5l6.1-.9z"/></svg></i><p style="margin:0"><b>Гарантия 7 дней</b><span>исправим сколы бесплатно</span></p></div><div><i><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg></i><p style="margin:0"><b>Запись онлайн</b><span>свободное время сразу видно</span></p></div><div><i><svg viewBox="0 0 24 24"><path d="M12 3v6M12 15v6M3 12h6M15 12h6"/></svg></i><p style="margin:0"><b>120+ оттенков</b><span>и дизайн по вашей картинке</span></p></div></div></div>
 </div>

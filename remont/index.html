@@ -10,15 +10,13 @@
 <style>
 /* Layout: вывеска мастерской — шапка со статусом «открыто», прайс с вкладками, как сдать вещь, адрес, заявка */
 :root{
-  --bg:#EEF2F4; --surface:#FFFFFF; --fg:#1D2A33; --muted:#5B6B76; --line:#D3DCE1;
-  --accent:#8B4A2B; --accent-ink:#FFFFFF; --amber:#D99A2B; --ok:#2E7D4F;
+  --bg:#1D2227; --surface:#262C32; --fg:#ECEAE6; --muted:#A3ACB3; --line:#353D45;
+  --accent:#D9973A; --accent-ink:#1D2227; --amber:#E8B25A; --ok:#79C59A;
   --display:"Oswald","Arial Narrow",Impact,sans-serif;
   --body:"PT Sans",system-ui,-apple-system,"Segoe UI",sans-serif;
-  color-scheme:light;
+  color-scheme:dark;
 }
-@media (prefers-color-scheme:dark){:root{
-  --bg:#141B20; --surface:#1C252C; --fg:#E8EEF1; --muted:#9CABB5; --line:#2C3943;
-  --accent:#D9895F; --accent-ink:#141B20; --amber:#F0B954; --ok:#6CC495; color-scheme:dark}}
+
 *{box-sizing:border-box}
 html,body{margin:0}
 body{background:var(--bg);color:var(--fg);font-family:var(--body);font-size:16px;line-height:1.55}
@@ -26,11 +24,11 @@ body{background:var(--bg);color:var(--fg);font-family:var(--body);font-size:16px
 h1,h2,h3{font-family:var(--display);font-weight:600;line-height:1.1;margin:0;text-transform:uppercase;letter-spacing:.02em;text-wrap:balance}
 h2{font-size:clamp(24px,4vw,34px)}
 p{margin:0}
-.demo{background:var(--fg);color:var(--bg);text-align:center;font-size:13px;padding-block:6px}
-.sign{background:var(--accent);color:var(--accent-ink)}
+.demo{background:#111518;color:#A3ACB3;text-align:center;font-size:13px;padding-block:6px}
+.sign{background:transparent;color:var(--fg);border-bottom:1px solid var(--line)}
 .sign .wrap{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;padding-block:14px}
 .sign .logo{font-family:var(--display);font-size:20px;text-transform:uppercase;letter-spacing:.04em}
-.status{display:inline-flex;align-items:center;gap:8px;font-weight:700;font-size:14px;background:rgba(0,0,0,.18);border-radius:999px;padding:5px 12px}
+.status{display:inline-flex;align-items:center;gap:8px;font-weight:700;font-size:14px;background:var(--surface);border-radius:999px;padding:5px 12px}
 .status i{width:9px;height:9px;border-radius:50%;background:var(--amber)}
 .status.open i{background:#7BE0A4}
 .hero{padding-block:36px 28px;display:grid;grid-template-columns:1.3fr 1fr;gap:28px;align-items:end}
@@ -68,8 +66,7 @@ footer{padding-block:24px;color:var(--muted);font-size:14px;border-top:1px solid
 @media (max-width:720px){.hero,.two{grid-template-columns:1fr}}
 
 /* тёмный первый экран */
-.band{position:relative;color:#F4EFEC;background:radial-gradient(900px 480px at 85% -10%,#E2A33A55,transparent 70%),radial-gradient(600px 400px at 0% 100%,#E2A33A22,transparent 70%),#151B20;
-  --fg:#F4EFEC;--muted:#C2B8B3;--line:rgba(255,255,255,.14);--surface:rgba(255,255,255,.06);overflow:hidden}
+.band{position:relative;background:radial-gradient(800px 460px at 85% 0%,rgba(217,151,58,.16),transparent 70%),var(--bg);color:var(--fg)}
 .band a.btn.ghost,.band .btn.ghost{color:#F4EFEC;border-color:rgba(255,255,255,.35);background:transparent}
 .trust{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px;border-top:1px solid var(--line);padding-block:22px 28px;margin-top:8px}
 .trust div{display:flex;gap:12px;align-items:center;min-width:0}
@@ -84,6 +81,7 @@ footer{padding-block:24px;color:var(--muted);font-size:14px;border-top:1px solid
 .band .hours .today{color:var(--amber)}
 .band .hero h1{color:#fff}.band .hero h1 span{color:var(--amber)}
 .tool{position:absolute;right:-40px;top:40px;width:420px;opacity:.07;pointer-events:none}
+.art .illus{width:100%;max-width:440px;display:block;margin:0 auto}
 </style>
 </head>
 <body>
@@ -101,11 +99,16 @@ footer{padding-block:24px;color:var(--muted);font-size:14px;border-top:1px solid
       <p>Поставим набойки за 15 минут, заменим батарейку при вас, сделаем дубликат ключа от домофона. Гарантия на ремонт 30 дней.</p>
       <div class="tags"><span>Набойки за 15 минут</span><span>Без записи</span><span>Гарантия 30 дней</span></div>
     </div>
-    <div class="card">
-      <h3 style="font-size:18px;margin-bottom:10px">Часы работы</h3>
-      <div class="hours" id="hours"></div>
-      <p class="note">ул. Ленина, 40 · вход со двора, вывеска «Ремонт»</p>
-    </div>
+    <div class="art"><svg class="illus" viewBox="0 0 480 400" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+<defs><radialGradient id="g523757" cx="50%" cy="45%" r="55%"><stop offset="0" stop-color="#2B333B" stop-opacity="1"/><stop offset="1" stop-color="#2B333B" stop-opacity="0"/></radialGradient></defs>
+<circle cx="240" cy="200" r="190" fill="url(#g523757)"/>
+<ellipse cx="240" cy="336" rx="180" ry="14" fill="#0F1316" opacity=".2"/>
+<path d="M70 300c0-30 8-90 30-112h52c8 36 36 58 80 66c44 8 74 14 74 46z" fill="#D9973A"/>
+<path d="M70 300h236v14q0 8-8 8h-220q-8 0-8-8z" fill="#0F1316"/>
+<circle cx="350" cy="150" r="64" fill="#7FA7C9"/><circle cx="350" cy="150" r="52" fill="#FBFAF7"/>
+<path d="M350 150v-34M350 150l24 14" stroke="#0F1316" stroke-width="6" stroke-linecap="round"/><circle cx="350" cy="150" r="6" fill="#0F1316"/>
+<g transform="rotate(-40 150 110)"><circle cx="150" cy="110" r="26" fill="none" stroke="#7FA7C9" stroke-width="12"/><rect x="172" y="104" width="90" height="12" rx="6" fill="#7FA7C9"/>
+<rect x="232" y="114" width="10" height="16" rx="3" fill="#7FA7C9"/><rect x="250" y="114" width="10" height="12" rx="3" fill="#7FA7C9"/></g></svg></div>
   </div>
   <div class="trust"><div><i><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg></i><p style="margin:0"><b>15 минут</b><span>набойки и батарейка при вас</span></p></div><div><i><svg viewBox="0 0 24 24"><path d="M12 3l8 3v6c0 5-3.5 8-8 9-4.5-1-8-4-8-9V6z"/><path d="M8.5 12l2.5 2.5 4.5-5"/></svg></i><p style="margin:0"><b>Гарантия 30 дней</b><span>на любой ремонт</span></p></div><div><i><svg viewBox="0 0 24 24"><circle cx="8" cy="15" r="4"/><path d="M11 12l9-9M17 6l2 2"/></svg></i><p style="margin:0"><b>Ключи и домофон</b><span>дубликат за 5 минут</span></p></div><div><i><svg viewBox="0 0 24 24"><path d="M12 3l2.7 5.6 6.1.9-4.4 4.3 1 6.1L12 17l-5.4 2.9 1-6.1L3.2 9.5l6.1-.9z"/></svg></i><p style="margin:0"><b>Осмотр бесплатно</b><span>цена до начала работ</span></p></div></div>
 </div></div>
@@ -140,6 +143,8 @@ footer{padding-block:24px;color:var(--muted);font-size:14px;border-top:1px solid
       <div class="done" id="done" hidden></div>
     </form>
     <div class="card">
+      <h3 style="font-size:18px">Часы работы</h3>
+      <div class="hours" id="hours" style="margin-block:10px 16px"></div>
       <h3 style="font-size:18px">Контакты</h3>
       <p style="margin-top:8px">Телефон: +7 900 000-00-00 (вымышленный)</p>
       <p>Адрес: ул. Ленина, 40, вход со двора</p>
