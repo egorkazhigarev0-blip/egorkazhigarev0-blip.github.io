@@ -82,6 +82,23 @@ footer{padding-block:24px;color:var(--muted);font-size:14px;border-top:1px solid
 .band .hero h1{color:#fff}.band .hero h1 span{color:var(--amber)}
 .tool{position:absolute;right:-40px;top:40px;width:420px;opacity:.07;pointer-events:none}
 .art .illus{width:100%;max-width:440px;display:block;margin:0 auto}
+
+/* фото в первом экране */
+.art.pho{position:relative;border-radius:28px;overflow:hidden;aspect-ratio:4/4.3;box-shadow:0 40px 70px -40px rgba(0,0,0,.55);background:var(--line,#ddd)}
+.art.pho>img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.art.pho::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(0,0,0,0) 55%,rgba(0,0,0,.3))}
+.art.pho .glass{position:absolute;z-index:2;left:16px;bottom:16px;display:flex;flex-direction:column;gap:2px;padding:12px 16px;border-radius:16px;background:rgba(255,255,255,.86);backdrop-filter:blur(10px);color:#1d1d1f;box-shadow:0 10px 30px -10px rgba(0,0,0,.35)}
+.art.pho .glass b{font-size:20px;line-height:1.1}.art.pho .glass span{font-size:12px;color:#55555c;font-weight:600}
+.art.pho .tag2{position:absolute;z-index:2;right:16px;top:16px;padding:8px 12px;border-radius:999px;background:rgba(20,20,20,.55);backdrop-filter:blur(8px);color:#fff;font-size:12px;font-weight:700}
+@media (max-width:720px){.art.pho{aspect-ratio:4/3.4}}
+.wsub{color:var(--muted);margin-top:6px;font-size:14px}
+.mosaic{display:grid;grid-template-columns:2fr 1fr 1fr;grid-auto-rows:190px;gap:12px;margin-top:18px}
+.mosaic figure{margin:0;position:relative;border-radius:16px;overflow:hidden;background:var(--line)}
+.mosaic .big{grid-row:span 2}
+.mosaic img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .6s cubic-bezier(.2,.75,.2,1)}
+.mosaic figure:hover img{transform:scale(1.05)}
+.mosaic figcaption{position:absolute;left:0;right:0;bottom:0;padding:22px 14px 12px;color:#fff;font-weight:700;font-size:14px;background:linear-gradient(0deg,rgba(0,0,0,.6),rgba(0,0,0,0))}
+@media (max-width:720px){.mosaic{grid-template-columns:1fr 1fr;grid-auto-rows:150px}.mosaic .big{grid-column:span 2;grid-row:span 2}}
 </style>
 <style>
 /* fx: плавные анимации (отключаются, если в системе включено «уменьшить движение») */
@@ -115,16 +132,7 @@ footer{padding-block:24px;color:var(--muted);font-size:14px;border-top:1px solid
       <p>Поставим набойки за 15 минут, заменим батарейку при вас, сделаем дубликат ключа от домофона. Гарантия на ремонт 30 дней.</p>
       <div class="tags"><span>Набойки за 15 минут</span><span>Без записи</span><span>Гарантия 30 дней</span></div>
     </div>
-    <div class="art"><svg class="illus" viewBox="0 0 480 400" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><defs><linearGradient id="i1l0" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#e0ab61"/><stop offset="1" stop-color="#a2712b"/></linearGradient><linearGradient id="i1l1" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#a5c1d9"/><stop offset="1" stop-color="#6585a0"/></linearGradient><linearGradient id="i1l2" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#abc5db"/><stop offset="1" stop-color="#7296b4"/></linearGradient><linearGradient id="i1l3" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#4b4e50"/><stop offset="1" stop-color="#0F1316"/></linearGradient><radialGradient id="i1r4" cx="50%" cy="45%" r="55%"><stop offset="0" stop-color="#2B333B" stop-opacity="1"/><stop offset="1" stop-color="#2B333B" stop-opacity="0"/></radialGradient><filter id="i1f5" x="-50%" y="-50%" width="200%" height="200%"><feGaussianBlur stdDeviation="9"/></filter></defs><circle cx="240" cy="200" r="195" fill="url(#i1r4)"/><ellipse cx="230" cy="338" rx="185" ry="14" fill="#0F1316" opacity="0.28" filter="url(#i1f5)"/>
-<path d="M66 300c0-34 8-96 32-120h56c8 38 38 62 84 70c46 8 78 16 78 50z" fill="url(#i1l0)"/>
-<path d="M66 300h250v16q0 8-8 8H74q-8 0-8-8z" fill="url(#i1l3)"/>
-<circle cx="120" cy="204" r="5" fill="#F5F1EA"/><circle cx="138" cy="215" r="5" fill="#F5F1EA"/><circle cx="156" cy="226" r="5" fill="#F5F1EA"/>
-<circle cx="352" cy="148" r="70" fill="url(#i1l1)"/><circle cx="352" cy="148" r="56" fill="#FBFAF6"/>
-<rect x="350" y="98" width="4" height="10" rx="2" fill="#0F1316" transform="rotate(0 352 148)"/><rect x="350" y="98" width="4" height="10" rx="2" fill="#0F1316" transform="rotate(30 352 148)"/><rect x="350" y="98" width="4" height="10" rx="2" fill="#0F1316" transform="rotate(60 352 148)"/><rect x="350" y="98" width="4" height="10" rx="2" fill="#0F1316" transform="rotate(90 352 148)"/><rect x="350" y="98" width="4" height="10" rx="2" fill="#0F1316" transform="rotate(120 352 148)"/><rect x="350" y="98" width="4" height="10" rx="2" fill="#0F1316" transform="rotate(150 352 148)"/><rect x="350" y="98" width="4" height="10" rx="2" fill="#0F1316" transform="rotate(180 352 148)"/><rect x="350" y="98" width="4" height="10" rx="2" fill="#0F1316" transform="rotate(210 352 148)"/><rect x="350" y="98" width="4" height="10" rx="2" fill="#0F1316" transform="rotate(240 352 148)"/><rect x="350" y="98" width="4" height="10" rx="2" fill="#0F1316" transform="rotate(270 352 148)"/><rect x="350" y="98" width="4" height="10" rx="2" fill="#0F1316" transform="rotate(300 352 148)"/><rect x="350" y="98" width="4" height="10" rx="2" fill="#0F1316" transform="rotate(330 352 148)"/>
-<path d="M352 148v-36M352 148l26 16" stroke="#0F1316" stroke-width="6" stroke-linecap="round"/><circle cx="352" cy="148" r="6" fill="#0F1316"/>
-<g transform="rotate(-38 150 104)"><circle cx="150" cy="104" r="28" fill="none" stroke="url(#i1l2)" stroke-width="13"/><rect x="174" y="98" width="96" height="13" rx="6.5" fill="url(#i1l2)"/>
-<rect x="238" y="108" width="11" height="18" rx="3" fill="url(#i1l2)"/><rect x="256" y="108" width="11" height="13" rx="3" fill="url(#i1l2)"/></g>
-<path d="M420 259l3.08 7.92 7.92 3.08-7.92 3.08-3.08 7.92-3.08-7.92-7.92-3.08 7.92-3.08z" fill="#D9973A" opacity="0.8"/></svg></div>
+    <div class="art pho"><img src="img/shoe-0.jpg" alt="Мастерская: инструменты и кожаный ботинок" fetchpriority="high"><span class="tag2">Без записи</span><div class="glass"><b>15 минут</b><span>набойки при вас</span></div></div>
   </div>
   <div class="trust"><div><i><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg></i><p style="margin:0"><b>15 минут</b><span>набойки и батарейка при вас</span></p></div><div><i><svg viewBox="0 0 24 24"><path d="M12 3l8 3v6c0 5-3.5 8-8 9-4.5-1-8-4-8-9V6z"/><path d="M8.5 12l2.5 2.5 4.5-5"/></svg></i><p style="margin:0"><b>Гарантия 30 дней</b><span>на любой ремонт</span></p></div><div><i><svg viewBox="0 0 24 24"><circle cx="8" cy="15" r="4"/><path d="M11 12l9-9M17 6l2 2"/></svg></i><p style="margin:0"><b>Ключи и домофон</b><span>дубликат за 5 минут</span></p></div><div><i><svg viewBox="0 0 24 24"><path d="M12 3l2.7 5.6 6.1.9-4.4 4.3 1 6.1L12 17l-5.4 2.9 1-6.1L3.2 9.5l6.1-.9z"/></svg></i><p style="margin:0"><b>Осмотр бесплатно</b><span>цена до начала работ</span></p></div></div>
 </div></div>
@@ -135,6 +143,8 @@ footer{padding-block:24px;color:var(--muted);font-size:14px;border-top:1px solid
   <div class="price" id="priceList" role="tabpanel"></div>
   <p class="note">Точную цену мастер назовёт, когда посмотрит вещь. Осмотр бесплатный.</p>
 </div></section>
+
+<section id="works"><div class="wrap"><h2>Мастерская</h2><p class="wsub">Фото: Unsplash (бесплатная лицензия). На вашем сайте здесь будут ваши фото.</p><div class="mosaic"><figure class="big"><img src="img/shoe-1.jpg" alt="Ремонт и чистка обуви" loading="lazy"><figcaption>Ремонт и чистка обуви</figcaption></figure><figure><img src="img/watch-1.jpg" alt="Ремонт часов" loading="lazy"><figcaption>Ремонт часов</figcaption></figure><figure><img src="img/keys-1.jpg" alt="Дубликаты ключей" loading="lazy"><figcaption>Дубликаты ключей</figcaption></figure><figure><img src="img/watch-0.jpg" alt="Замена батареек и механизмов" loading="lazy"><figcaption>Замена батареек и механизмов</figcaption></figure><figure><img src="img/shoe-3.jpg" alt="Уход за кожей" loading="lazy"><figcaption>Уход за кожей</figcaption></figure></div></div></section>
 
 <section><div class="wrap">
   <h2>Как сдать в ремонт</h2>

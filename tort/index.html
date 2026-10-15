@@ -110,6 +110,15 @@ footer{border-top:1px solid var(--line);padding-block:24px;color:var(--muted);fo
 .trust span{font-size:13px;color:var(--muted)}
 @media (max-width:720px){.trust{grid-template-columns:repeat(2,minmax(0,1fr))}}
 .art .illus{width:100%;max-width:460px;display:block;margin:0 auto}
+
+/* фото в первом экране */
+.art.pho{position:relative;border-radius:28px;overflow:hidden;aspect-ratio:4/4.3;box-shadow:0 40px 70px -40px rgba(0,0,0,.55);background:var(--line,#ddd)}
+.art.pho>img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.art.pho::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(0,0,0,0) 55%,rgba(0,0,0,.3))}
+.art.pho .glass{position:absolute;z-index:2;left:16px;bottom:16px;display:flex;flex-direction:column;gap:2px;padding:12px 16px;border-radius:16px;background:rgba(255,255,255,.86);backdrop-filter:blur(10px);color:#1d1d1f;box-shadow:0 10px 30px -10px rgba(0,0,0,.35)}
+.art.pho .glass b{font-size:20px;line-height:1.1}.art.pho .glass span{font-size:12px;color:#55555c;font-weight:600}
+.art.pho .tag2{position:absolute;z-index:2;right:16px;top:16px;padding:8px 12px;border-radius:999px;background:rgba(20,20,20,.55);backdrop-filter:blur(8px);color:#fff;font-size:12px;font-weight:700}
+@media (max-width:720px){.art.pho{aspect-ratio:4/3.4}}
 </style>
 
 <style>
@@ -152,17 +161,7 @@ footer{border-top:1px solid var(--line);padding-block:24px;color:var(--muted);fo
         <div><b>5 начинок</b>на выбор</div>
       </div>
     </div>
-    <div class="art"><svg class="illus" viewBox="0 0 480 400" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><defs><linearGradient id="i0l0" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#cb3a73"/><stop offset="1" stop-color="#a4144d"/></linearGradient><linearGradient id="i0l1" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#FFF7F2"/><stop offset="1" stop-color="#eae3de"/></linearGradient><linearGradient id="i0l2" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#6a483b"/><stop offset="1" stop-color="#5A3426"/></linearGradient><linearGradient id="i0l3" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ce467b"/><stop offset="1" stop-color="#911244"/></linearGradient><linearGradient id="i0l4" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ce467b"/><stop offset="1" stop-color="#911244"/></linearGradient><linearGradient id="i0l5" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ce467b"/><stop offset="1" stop-color="#911244"/></linearGradient><linearGradient id="i0l6" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ce467b"/><stop offset="1" stop-color="#911244"/></linearGradient><linearGradient id="i0l7" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#99b88c"/><stop offset="1" stop-color="#6E9A5C"/></linearGradient><linearGradient id="i0l8" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#99b88c"/><stop offset="1" stop-color="#6E9A5C"/></linearGradient><radialGradient id="i0r9" cx="50%" cy="45%" r="55%"><stop offset="0" stop-color="#F6E3EA" stop-opacity="1"/><stop offset="1" stop-color="#F6E3EA" stop-opacity="0"/></radialGradient><filter id="i0f10" x="-50%" y="-50%" width="200%" height="200%"><feGaussianBlur stdDeviation="9"/></filter></defs><circle cx="240" cy="200" r="195" fill="url(#i0r9)"/><ellipse cx="240" cy="340" rx="160" ry="14" fill="#2B1D29" opacity="0.28" filter="url(#i0f10)"/>
-<ellipse cx="240" cy="326" rx="160" ry="20" fill="#e9d7de"/><ellipse cx="240" cy="320" rx="150" ry="16" fill="#FFFFFF"/>
-<rect x="112" y="222" width="256" height="96" rx="18" fill="url(#i0l1)"/>
-<rect x="112" y="290" width="256" height="28" rx="10" fill="url(#i0l0)"/>
-<path d="M112 236q21 30 42 0t43 0t43 0t43 0t43 0t42 0v-14h-256z" fill="url(#i0l2)"/>
-<rect x="148" y="146" width="184" height="86" rx="16" fill="url(#i0l0)"/>
-<rect x="160" y="160" width="10" height="56" rx="5" fill="#fff" opacity=".18"/>
-<path d="M148 158q18 24 37 0t37 0t37 0t37 0t36 0v-12h-184z" fill="url(#i0l2)"/>
-<rect x="184" y="100" width="112" height="56" rx="14" fill="url(#i0l1)"/>
-<circle cx="196" cy="112" r="11" fill="url(#i0l3)"/><circle cx="192" cy="108" r="3" fill="#fff" opacity=".7"/><circle cx="226" cy="102" r="11" fill="url(#i0l4)"/><circle cx="222" cy="98" r="3" fill="#fff" opacity=".7"/><circle cx="256" cy="102" r="11" fill="url(#i0l5)"/><circle cx="252" cy="98" r="3" fill="#fff" opacity=".7"/><circle cx="286" cy="112" r="11" fill="url(#i0l6)"/><circle cx="282" cy="108" r="3" fill="#fff" opacity=".7"/><rect x="218" y="58" width="9" height="40" rx="3" fill="url(#i0l7)"/><path d="M219 66l7-4M219 78l7-4M219 90l7-4" stroke="#fff" stroke-width="2" opacity=".6"/><path d="M222.5 40c8 8 5 15 0 17c-5-2-8-9 0-17z" fill="#FFC35A"/><circle cx="222.5" cy="50" r="12" fill="#FFC35A" opacity=".18"/><rect x="254" y="58" width="9" height="40" rx="3" fill="url(#i0l8)"/><path d="M255 66l7-4M255 78l7-4M255 90l7-4" stroke="#fff" stroke-width="2" opacity=".6"/><path d="M258.5 40c8 8 5 15 0 17c-5-2-8-9 0-17z" fill="#FFC35A"/><circle cx="258.5" cy="50" r="12" fill="#FFC35A" opacity=".18"/>
-<path d="M396 104l4.48 11.52 11.52 4.48-11.52 4.48-4.48 11.52-4.48-11.52-11.52-4.48 11.52-4.48z" fill="#6E9A5C" opacity="1"/><path d="M88 165l3.08 7.92 7.92 3.08-7.92 3.08-3.08 7.92-3.08-7.92-7.92-3.08 7.92-3.08z" fill="#C2185B" opacity="0.7"/><path d="M372 242l2.24 5.76 5.76 2.24-5.76 2.24-2.24 5.76-2.24-5.76-5.76-2.24 5.76-2.24z" fill="#C2185B" opacity="0.6"/></svg></div>
+    <div class="art pho"><img src="img/cake-8.jpg" alt="Розовый торт с подтёками и рожком мороженого" fetchpriority="high"><span class="tag2">Заказ за 3 дня</span><div class="glass"><b>от 1 800 ₽</b><span>за килограмм торта</span></div></div>
   </div>
   <div class="trust"><div><i><svg viewBox="0 0 24 24"><path d="M5 19c0-8 6-14 15-14 0 9-6 15-14 15"/><path d="M5 19l7-7"/></svg></i><p style="margin:0"><b>Натуральный состав</b><span>масло, сливки, ягоды</span></p></div><div><i><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg></i><p style="margin:0"><b>Заказ за 3 дня</b><span>или срочно по договорённости</span></p></div><div><i><svg viewBox="0 0 24 24"><path d="M3 6h11v9H3zM14 9h4l3 3v3h-7"/><circle cx="7" cy="17" r="2"/><circle cx="17" cy="17" r="2"/></svg></i><p style="margin:0"><b>Доставка 300 ₽</b><span>по городу в день праздника</span></p></div><div><i><svg viewBox="0 0 24 24"><path d="M4 5h16v11H9l-5 4z"/></svg></i><p style="margin:0"><b>Ответ за час</b><span>в Telegram и WhatsApp</span></p></div></div>
 </div></div>
@@ -175,14 +174,8 @@ footer{border-top:1px solid var(--line);padding-block:24px;color:var(--muted);fo
 
 <section id="works"><div class="wrap">
   <h2>Наши торты</h2>
-  <p class="wsub">Фото с бесплатного фотостока. На вашем сайте здесь будут ваши работы.</p>
-  <div class="mosaic">
-    <figure class="big"><img src="img/p1409.jpg" alt="Белый торт с ягодами и свечой" loading="lazy"><figcaption>На день рождения</figcaption></figure>
-    <figure><img src="img/p1217.jpg" alt="Нежно-розовый торт на подставке" loading="lazy"><figcaption>Свадебные и праздничные</figcaption></figure>
-    <figure><img src="img/p1713.jpg" alt="Шоколадные капкейки с посыпкой" loading="lazy"><figcaption>Капкейки</figcaption></figure>
-    <figure><img src="img/p1576.jpg" alt="Конфеты в форме сердец" loading="lazy"><figcaption>Сладкий стол</figcaption></figure>
-    <figure><img src="img/p1185.jpg" alt="Клубника и голубика" loading="lazy"><figcaption>Свежие ягоды</figcaption></figure>
-  </div>
+  <p class="wsub">Фото: Unsplash (бесплатная лицензия). На вашем сайте здесь будут ваши фото.</p>
+  <div class="mosaic"><figure class="big"><img src="img/cake-2.jpg" alt="Торт с шоколадными подтёками" loading="lazy"><figcaption>Шоколадные подтёки</figcaption></figure><figure><img src="img/cake-11.jpg" alt="Мятный торт с розовым кремом" loading="lazy"><figcaption>Праздничные</figcaption></figure><figure><img src="img/cake-9.jpg" alt="Радужный торт с посыпкой" loading="lazy"><figcaption>Детские</figcaption></figure><figure><img src="img/cake-13.jpg" alt="Капкейки с кремом" loading="lazy"><figcaption>Капкейки</figcaption></figure><figure><img src="img/cake-6.jpg" alt="Белый торт со свечой" loading="lazy"><figcaption>На день рождения</figcaption></figure></div>
 </div></section>
 
 <section id="calc"><div class="wrap">
@@ -216,7 +209,7 @@ footer{border-top:1px solid var(--line);padding-block:24px;color:var(--muted);fo
   <div class="steps">
     <div class="step"><b>1</b><p>Выберите начинку и вес в калькуляторе или напишите, если не уверены.</p></div>
     <div class="step"><b>2</b><p>Обсудим дизайн. Можно прислать картинку-пример.</p></div>
-    <div class="step"><b>3</b><p>Предоплата 50%. Остальное при получении.</p></div>
+    <div class="step"><b>3</b><p>Оплата при получении торта.</p></div>
     <div class="step"><b>4</b><p>Самовывоз или доставка по городу в день праздника.</p></div>
   </div>
 </div></section>

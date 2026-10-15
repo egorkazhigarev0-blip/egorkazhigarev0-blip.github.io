@@ -106,7 +106,7 @@ input{width:100%;font:inherit;color:var(--fg);background:var(--bg);border:1px so
 .chip[aria-pressed="true"]{background:var(--fg);color:var(--bg);border-color:var(--fg)}
 .gallery{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:12px;margin-top:18px}
 .work{border-radius:16px;overflow:hidden;background:var(--surface);border:1px solid var(--line)}
-.work canvas{display:block;width:100%;aspect-ratio:1}
+.work img{display:block;width:100%;aspect-ratio:1;object-fit:cover;transition:transform .6s cubic-bezier(.2,.75,.2,1)}.work{position:relative}.work:hover img{transform:scale(1.05)}
 .work p{font-size:13px;padding:8px 10px;color:var(--muted)}
 .masters{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:16px}
 .master{display:flex;gap:14px;align-items:center;background:var(--surface);border:1px solid var(--line);border-radius:18px;padding:16px}
@@ -141,6 +141,15 @@ footer{border-top:1px solid var(--line);padding-block:24px;color:var(--muted);fo
 .band .facts b{color:#fff}
 .art .illus{width:100%;max-width:460px;display:block;margin:0 auto}
 .hero>*{min-width:0}
+
+/* фото в первом экране */
+.art.pho{position:relative;border-radius:28px;overflow:hidden;aspect-ratio:4/4.3;box-shadow:0 40px 70px -40px rgba(0,0,0,.55);background:var(--line,#ddd)}
+.art.pho>img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.art.pho::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(0,0,0,0) 55%,rgba(0,0,0,.3))}
+.art.pho .glass{position:absolute;z-index:2;left:16px;bottom:16px;display:flex;flex-direction:column;gap:2px;padding:12px 16px;border-radius:16px;background:rgba(255,255,255,.86);backdrop-filter:blur(10px);color:#1d1d1f;box-shadow:0 10px 30px -10px rgba(0,0,0,.35)}
+.art.pho .glass b{font-size:20px;line-height:1.1}.art.pho .glass span{font-size:12px;color:#55555c;font-weight:600}
+.art.pho .tag2{position:absolute;z-index:2;right:16px;top:16px;padding:8px 12px;border-radius:999px;background:rgba(20,20,20,.55);backdrop-filter:blur(8px);color:#fff;font-size:12px;font-weight:700}
+@media (max-width:720px){.art.pho{aspect-ratio:4/3.4}}
 </style>
 <style>
 /* fx: плавные анимации (отключаются, если в системе включено «уменьшить движение») */
@@ -180,19 +189,7 @@ footer{border-top:1px solid var(--line);padding-block:24px;color:var(--muted);fo
       <div><b>120+</b><span>оттенков в палитре</span></div>
     </div>
   </div>
-  <div class="art"><svg class="illus" viewBox="0 0 480 400" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><defs><linearGradient id="i2l0" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#e0add2"/><stop offset="1" stop-color="#b475a3"/></linearGradient><linearGradient id="i2l1" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#bbd2b6"/><stop offset="1" stop-color="#87a280"/></linearGradient><linearGradient id="i2l2" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#e4c1b9"/><stop offset="1" stop-color="#b88d83"/></linearGradient><linearGradient id="i2l3" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#dea7cf"/><stop offset="1" stop-color="#a96e99"/></linearGradient><linearGradient id="i2l4" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#595659"/><stop offset="1" stop-color="#120E13"/></linearGradient><linearGradient id="i2l5" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#b7cfb1"/><stop offset="1" stop-color="#7f9878"/></linearGradient><linearGradient id="i2l6" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#595659"/><stop offset="1" stop-color="#120E13"/></linearGradient><linearGradient id="i2l7" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#e2bdb4"/><stop offset="1" stop-color="#ad857c"/></linearGradient><linearGradient id="i2l8" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#595659"/><stop offset="1" stop-color="#120E13"/></linearGradient><linearGradient id="i2l9" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#595659"/><stop offset="1" stop-color="#120E13"/></linearGradient><radialGradient id="i2r10" cx="50%" cy="45%" r="55%"><stop offset="0" stop-color="#342A37" stop-opacity="1"/><stop offset="1" stop-color="#342A37" stop-opacity="0"/></radialGradient><filter id="i2f11" x="-50%" y="-50%" width="200%" height="200%"><feGaussianBlur stdDeviation="9"/></filter></defs><circle cx="240" cy="200" r="195" fill="url(#i2r10)"/><ellipse cx="236" cy="312" rx="160" ry="14" fill="#120E13" opacity="0.28" filter="url(#i2f11)"/>
-<rect x="114" y="92" width="30" height="58" rx="7" fill="url(#i2l4)"/>
-<path d="M96 162q0-16 16-16h34q16 0 16 16v124q0 14-14 14h-38q-14 0-14-14z" fill="url(#i2l3)"/>
-<rect x="106" y="168" width="9" height="106" rx="4.5" fill="#fff" opacity=".4"/>
-<rect x="108" y="216.39999999999998" width="42" height="48.64" rx="6" fill="#fff" opacity=".9"/><rect x="114" y="226.39999999999998" width="30" height="5" rx="2.5" fill="#D48AC0" opacity=".7"/><rect x="206" y="58" width="30" height="58" rx="7" fill="url(#i2l6)"/>
-<path d="M188 128q0-16 16-16h34q16 0 16 16v158q0 14-14 14h-38q-14 0-14-14z" fill="url(#i2l5)"/>
-<rect x="198" y="134" width="9" height="140" rx="4.5" fill="#fff" opacity=".4"/>
-<rect x="200" y="197.7" width="42" height="59.52" rx="6" fill="#fff" opacity=".9"/><rect x="206" y="207.7" width="30" height="5" rx="2.5" fill="#9FBF97" opacity=".7"/><rect x="298" y="104" width="30" height="58" rx="7" fill="url(#i2l8)"/>
-<path d="M280 174q0-16 16-16h34q16 0 16 16v112q0 14-14 14h-38q-14 0-14-14z" fill="url(#i2l7)"/>
-<rect x="290" y="180" width="9" height="94" rx="4.5" fill="#fff" opacity=".4"/>
-<rect x="292" y="223.0" width="42" height="44.800000000000004" rx="6" fill="#fff" opacity=".9"/><rect x="298" y="233.0" width="30" height="5" rx="2.5" fill="#D9A79B" opacity=".7"/><circle cx="380" cy="146" r="28" fill="url(#i2l0)"/><circle cx="370.2" cy="136.2" r="7.0" fill="#fff" opacity=".6"/><circle cx="404" cy="200" r="19" fill="url(#i2l1)"/><circle cx="397.35" cy="193.35" r="4.75" fill="#fff" opacity=".6"/><circle cx="366" cy="232" r="13" fill="url(#i2l2)"/><circle cx="361.45" cy="227.45" r="3.25" fill="#fff" opacity=".6"/>
-<g transform="rotate(-38 120 120)"><rect x="70" y="112" width="110" height="10" rx="5" fill="url(#i2l9)"/><path d="M180 112l26 5-26 5z" fill="#D48AC0"/></g>
-<path d="M84 201l3.6400000000000006 9.36 9.36 3.6400000000000006-9.36 3.6400000000000006-3.6400000000000006 9.36-3.6400000000000006-9.36-9.36-3.6400000000000006 9.36-3.6400000000000006z" fill="#9FBF97" opacity="1"/><path d="M420 81l2.5200000000000005 6.4799999999999995 6.4799999999999995 2.5200000000000005-6.4799999999999995 2.5200000000000005-2.5200000000000005 6.4799999999999995-2.5200000000000005-6.4799999999999995-6.4799999999999995-2.5200000000000005 6.4799999999999995-2.5200000000000005z" fill="#D48AC0" opacity="0.7"/></svg></div>
+  <div class="art pho"><img src="img/nails-3.jpg" alt="Маникюр с блёстками" fetchpriority="high"><span class="tag2">Запись онлайн</span><div class="glass"><b>1,5 часа</b><span>маникюр с покрытием</span></div></div>
 </header>
 <div class="wrap"><div class="trust"><div><i><svg viewBox="0 0 24 24"><path d="M12 3l8 3v6c0 5-3.5 8-8 9-4.5-1-8-4-8-9V6z"/><path d="M8.5 12l2.5 2.5 4.5-5"/></svg></i><p style="margin:0"><b>Стерильно</b><span>крафт-пакет вскрываем при вас</span></p></div><div><i><svg viewBox="0 0 24 24"><path d="M12 3l2.7 5.6 6.1.9-4.4 4.3 1 6.1L12 17l-5.4 2.9 1-6.1L3.2 9.5l6.1-.9z"/></svg></i><p style="margin:0"><b>Гарантия 7 дней</b><span>исправим сколы бесплатно</span></p></div><div><i><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg></i><p style="margin:0"><b>Запись онлайн</b><span>свободное время сразу видно</span></p></div><div><i><svg viewBox="0 0 24 24"><path d="M12 3v6M12 15v6M3 12h6M15 12h6"/></svg></i><p style="margin:0"><b>120+ оттенков</b><span>и дизайн по вашей картинке</span></p></div></div></div>
 </div>
@@ -214,7 +211,7 @@ footer{border-top:1px solid var(--line);padding-block:24px;color:var(--muted);fo
   <div class="head"><div><p class="eyebrow">Портфолио</p><h2>Наши <em>работы</em></h2></div>
     <div class="filters" id="filters"></div></div>
   <div class="gallery" id="gallery"></div>
-  <p class="eyebrow" style="margin-top:12px">На настоящем сайте здесь будут фото ваших работ</p>
+  <p class="eyebrow" style="margin-top:12px;text-transform:none;letter-spacing:0">Фото: Unsplash (бесплатная лицензия). На вашем сайте здесь будут ваши фото.</p>
 </div></section>
 
 <section id="masters"><div class="wrap">
@@ -297,33 +294,25 @@ $("pane").addEventListener("click",e=>{
 });
 draw();
 
-// работы: узоры рисуются на canvas
+// работы: фото (Unsplash). На сайте клиента здесь его собственные работы
 const WORKS=[
-  {s:"Нюд",c:["#E8C8BE","#D9AFA3"],k:"plain"},{s:"Френч",c:["#F3E6E1","#FFFFFF"],k:"french"},{s:"Яркие",c:["#7A3E6E","#B24C8F"],k:"plain"},
-  {s:"Дизайн",c:["#2B2230","#C9A76A"],k:"dots"},{s:"Нюд",c:["#C98E86","#E6C1B9"],k:"ombre"},{s:"Дизайн",c:["#8FA487","#F3EEE6"],k:"lines"},
-  {s:"Френч",c:["#E6D4CF","#2B2230"],k:"french"},{s:"Яркие",c:["#C43B3B","#E86A5A"],k:"ombre"}
+  {s:"Нюд",src:"img/nails-2.jpg"},
+  {s:"Нюд",src:"img/nails-4.jpg"},
+  {s:"Дизайн",src:"img/nails-3.jpg"},
+  {s:"Тёмные",src:"img/nails-1.jpg"},
+  {s:"Светлые",src:"img/nails-5.jpg"},
+  {s:"Дизайн",src:"img/nails-11.jpg"},
+  {s:"Тёмные",src:"img/nails-6.jpg"},
+  {s:"Нюд",src:"img/nails-9.jpg"},
+  {s:"Светлые",src:"img/nails-7.jpg"},
+  {s:"Дизайн",src:"img/nails-8.jpg"}
 ];
-function paint(cv,w){
-  const x=cv.getContext("2d"),W=cv.width=240,H=cv.height=240;
-  x.fillStyle=getComputedStyle(document.body).getPropertyValue("--soft");x.fillRect(0,0,W,H);
-  const nails=[[40,70,34,120],[86,40,38,150],[134,46,38,146],[182,80,32,112]];
-  nails.forEach(([nx,ny,nw,nh],i)=>{
-    x.save();x.beginPath();x.roundRect(nx,ny,nw,nh,[nw/2,nw/2,8,8]);x.clip();
-    if(w.k==="ombre"){const g=x.createLinearGradient(0,ny,0,ny+nh);g.addColorStop(0,w.c[1]);g.addColorStop(1,w.c[0]);x.fillStyle=g}else x.fillStyle=w.c[0];
-    x.fillRect(nx,ny,nw,nh);
-    if(w.k==="french"){x.fillStyle=w.c[1];x.beginPath();x.ellipse(nx+nw/2,ny,nw*.62,nh*.2,0,0,Math.PI*2);x.fill()}
-    if(w.k==="dots"&&i%2===0){x.fillStyle=w.c[1];for(let d=0;d<5;d++){x.beginPath();x.arc(nx+nw/2,ny+18+d*22,3.2,0,7);x.fill()}}
-    if(w.k==="lines"&&i%2===1){x.strokeStyle=w.c[1];x.lineWidth=3;x.beginPath();x.moveTo(nx,ny+nh*.3);x.lineTo(nx+nw,ny+nh*.55);x.stroke()}
-    x.fillStyle="rgba(255,255,255,.28)";x.fillRect(nx+6,ny+12,5,nh*.5);
-    x.restore();
-  });
-}
 const STYLES=["Все",...new Set(WORKS.map(w=>w.s))];let style="Все";
 $("filters").innerHTML=STYLES.map(s=>`<button class="chip" aria-pressed="${s==="Все"}">${s}</button>`).join("");
 $("filters").addEventListener("click",e=>{const b=e.target.closest(".chip");if(!b)return;style=b.textContent;[...$("filters").children].forEach(c=>c.setAttribute("aria-pressed",c===b));gallery()});
 function gallery(){
   $("gallery").innerHTML="";
-  WORKS.filter(w=>style==="Все"||w.s===style).forEach(w=>{const d=document.createElement("div");d.className="work";const cv=document.createElement("canvas");d.appendChild(cv);d.insertAdjacentHTML("beforeend",`<p>${w.s}</p>`);$("gallery").appendChild(d);paint(cv,w)});
+  WORKS.filter(w=>style==="Все"||w.s===style).forEach(w=>{const d=document.createElement("div");d.className="work";d.innerHTML=`<img src="${w.src}" alt="Маникюр: ${w.s}" loading="lazy"><p>${w.s}</p>`;$("gallery").appendChild(d)});
 }
 gallery();
 $("masterList").innerHTML=MASTERS.slice(0,2).map(m=>`<div class="master"><div class="ava" style="background:${m.c}">${m.n[0]}</div><div><b>${m.n}</b><p>${m.r}</p></div></div>`).join("")+`<div class="master"><div class="ava" style="background:#C98E86">+</div><div><b>Ученица-мастер</b><p>Маникюр со скидкой 30% под присмотром Алины</p></div></div>`;
