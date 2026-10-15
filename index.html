@@ -73,6 +73,22 @@ details p{color:var(--muted);margin-top:8px}
 footer{padding-block:24px;color:var(--muted);font-size:14px}
 @media (max-width:860px){.plans{grid-template-columns:1fr}}
 </style>
+<style>
+/* fx: плавные анимации (отключаются, если в системе включено «уменьшить движение») */
+@media (prefers-reduced-motion: no-preference){
+  .fx-rv{opacity:0;transform:translateY(22px);transition:opacity .8s ease,transform .8s cubic-bezier(.2,.75,.2,1)}
+  .fx-rv.fx-in{opacity:1;transform:none}
+  .fx-float{animation:fxFloat 6s ease-in-out infinite}
+  @keyframes fxFloat{0%,100%{transform:translateY(0)}50%{transform:translateY(-10px)}}
+  a,button,.btn,[role=button]{transition:transform .25s ease,box-shadow .25s ease,background-color .25s ease,color .25s ease}
+  a.btn:hover,button:hover,.btn:hover{transform:translateY(-2px)}
+  a.btn:active,button:active,.btn:active{transform:translateY(0) scale(.98)}
+  .fx-lift{transition:transform .35s cubic-bezier(.2,.75,.2,1),box-shadow .35s ease}
+  .fx-lift:hover{transform:translateY(-4px);box-shadow:0 18px 40px -22px rgba(0,0,0,.35)}
+}
+.fx-sound{position:fixed;left:14px;bottom:14px;z-index:50;border:1px solid rgba(127,127,127,.35);background:rgba(255,255,255,.85);color:#222;border-radius:999px;padding:7px 12px;font:600 13px/1 system-ui,sans-serif;cursor:pointer;backdrop-filter:blur(6px)}
+.fx-sound[aria-pressed=false]{opacity:.7}
+</style>
 </head>
 <body>
 <header class="top"><div class="wrap">
@@ -107,7 +123,7 @@ footer{padding-block:24px;color:var(--muted);font-size:14px}
         <span class="tag">Стандарт · чаще всего выбирают</span>
         <h3>Сайт с калькулятором</h3>
         <div class="price"><b>1 990 ₽</b><small>первым клиентам, потом 2 790 ₽</small></div>
-        <ul><li>Каталог товаров или услуг</li><li>Калькулятор стоимости</li><li>Форма заказа с заявкой в Telegram</li><li>Ответы на частые вопросы</li><li>Готово за 3–4 дня</li></ul>
+        <ul><li>Каталог товаров или услуг</li><li>Калькулятор стоимости</li><li>Форма заказа с заявкой в Telegram</li><li>Ответы на частые вопросы</li><li>Плавные анимации</li><li>Готово за 3–4 дня</li></ul>
         <a class="btn" href="tort/">Открыть пример</a>
       </div>
     </article>
@@ -117,7 +133,7 @@ footer{padding-block:24px;color:var(--muted);font-size:14px}
         <span class="tag">Премиум</span>
         <h3>Сайт с онлайн-записью</h3>
         <div class="price"><b>3 490 ₽</b><small>первым клиентам, потом 4 490 ₽</small></div>
-        <ul><li>Запись: услуга, мастер, день и время</li><li>Галерея работ с фильтрами</li><li>Страница мастеров</li><li>Продуманный дизайн под ваш бренд</li><li>Готово за 5–7 дней</li></ul>
+        <ul><li>Запись: услуга, мастер, день и время</li><li>Галерея работ с фильтрами</li><li>Страница мастеров</li><li>Продуманный дизайн под ваш бренд</li><li>Анимации и звуки по желанию</li><li>Готово за 5–7 дней</li></ul>
         <a class="btn ghost" href="nogti/">Открыть пример</a>
       </div>
     </article>
@@ -148,6 +164,7 @@ footer{padding-block:24px;color:var(--muted);font-size:14px}
   <h2>Вопросы</h2>
   <details><summary>Нужно ли платить каждый месяц?</summary><p>Нет. Сайт размещается бесплатно. Платно только собственный адрес вроде vash-salon.ru, около 200–600 ₽ в год, и он по желанию.</p></details>
   <details><summary>Можно потом поменять цены?</summary><p>Да. Первые правки бесплатно, дальше мелкие правки стоят 200–300 ₽.</p></details>
+  <details><summary>А анимации и звуки будут?</summary><p>Да, по желанию. Плавное появление блоков и лёгкие эффекты при наведении есть во всех примерах. Можно добавить и тихие приятные звуки при нажатии на кнопки, их посетитель может выключить. Откройте примеры выше и попробуйте.</p></details>
   <details><summary>Чем это лучше группы ВКонтакте?</summary><p>Сайт находят в Яндексе и на картах, на нём сразу видны цены и работы, а записаться можно без переписки. Группу ВК лучше оставить и поставить в ней ссылку на сайт.</p></details>
 </div></section>
 
@@ -159,5 +176,53 @@ footer{padding-block:24px;color:var(--muted);font-size:14px}
 
 <footer><div class="wrap">Примеры на этой странице сделаны для вымышленных бизнесов.</div></footer>
 
+<script>window.FX_NO_SOUND=true;
+/* fx: появление блоков при прокрутке, «парящая» иллюстрация и мягкие звуки нажатий (можно выключить кнопкой) */
+(function(){
+  var reduce = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var sel = 'section > *, .card, .plan, article, details, .row, .item, .tile, .step, .steps > div, .trust > div, .price-card, li.svc';
+  var els = Array.prototype.slice.call(document.querySelectorAll(sel)).filter(function(e){ return e.getBoundingClientRect().height > 20; });
+  if(!reduce && 'IntersectionObserver' in window){
+    var io = new IntersectionObserver(function(es){ es.forEach(function(e){ if(e.isIntersecting){ e.target.classList.add('fx-in'); io.unobserve(e.target); } }); }, {threshold:.12, rootMargin:'0px 0px -40px 0px'});
+    els.forEach(function(e, i){ if(e.getBoundingClientRect().top > innerHeight*0.9){ e.classList.add('fx-rv'); e.style.transitionDelay = (i % 4) * 70 + 'ms'; io.observe(e); } });
+  }
+  document.querySelectorAll('.card, .plan, .tile, .item, .row').forEach(function(e){ e.classList.add('fx-lift'); });
+  var hero = document.querySelector('.hero svg, .hero img, .hero .art, .hero-art, header svg');
+  if(hero && !reduce) hero.classList.add('fx-float');
+
+  if(window.FX_NO_SOUND) return;
+  // звуки: короткие и тихие, генерируются в браузере (без файлов)
+  var on = true; try{ on = localStorage.getItem('fx-sound') !== 'off'; }catch(e){}
+  var ctx = null;
+  function tone(freqs, dur, vol){
+    if(!on) return;
+    try{
+      ctx = ctx || new (window.AudioContext || window.webkitAudioContext)();
+      var t = ctx.currentTime;
+      freqs.forEach(function(f, i){
+        var o = ctx.createOscillator(), g = ctx.createGain();
+        o.type = 'sine'; o.frequency.setValueAtTime(f, t + i*dur*0.6);
+        g.gain.setValueAtTime(0.0001, t + i*dur*0.6);
+        g.gain.exponentialRampToValueAtTime(vol, t + i*dur*0.6 + 0.012);
+        g.gain.exponentialRampToValueAtTime(0.0001, t + i*dur*0.6 + dur);
+        o.connect(g); g.connect(ctx.destination); o.start(t + i*dur*0.6); o.stop(t + i*dur*0.6 + dur + 0.02);
+      });
+    }catch(e){}
+  }
+  window.fxSuccess = function(){ tone([523.25, 659.25, 783.99], 0.22, 0.05); };
+  document.addEventListener('click', function(e){
+    var b = e.target.closest('a.btn, button, .btn, .chip, .tab, [role=button]');
+    if(!b || b.classList.contains('fx-sound')) return;
+    tone([880, 1320], 0.07, 0.03);
+  });
+  document.addEventListener('submit', function(){ window.fxSuccess(); }, true);
+  var t = document.createElement('button');
+  t.className = 'fx-sound'; t.type = 'button';
+  function label(){ t.textContent = on ? '♪ Звуки: вкл' : '♪ Звуки: выкл'; t.setAttribute('aria-pressed', on); }
+  label();
+  t.addEventListener('click', function(){ on = !on; try{ localStorage.setItem('fx-sound', on ? 'on' : 'off'); }catch(e){} label(); if(on) tone([660, 990], 0.08, 0.035); });
+  document.body.appendChild(t);
+})();
+</script>
 </body>
 </html>
