@@ -339,39 +339,52 @@ $("masterList").innerHTML=MASTERS.slice(0,2).map(m=>`<div class="master"><div cl
     els.forEach(function(e, i){ if(e.getBoundingClientRect().top > innerHeight*0.9){ e.classList.add('fx-rv'); e.style.transitionDelay = (i % 4) * 70 + 'ms'; io.observe(e); } });
   }
   document.querySelectorAll('.card, .plan, .tile, .item, .row').forEach(function(e){ e.classList.add('fx-lift'); });
-  var hero = document.querySelector('.hero svg, .hero img, .hero .art, .hero-art, header svg');
+  var hero = document.querySelector('.hero svg, .hero img:not(.nofloat), .hero .art, .hero-art, header svg');
   if(hero && !reduce) hero.classList.add('fx-float');
 
-  // звуки: короткие и тихие, генерируются в браузере (без файлов)
+  if(window.FX_NO_SOUND) return;
+  // звуки: короткие, тихие и мягкие, генерируются в браузере (без файлов)
   var on = true; try{ on = localStorage.getItem('fx-sound') !== 'off'; }catch(e){}
-  var ctx = null;
-  function tone(freqs, dur, vol){
-    if(!on) return;
-    try{
-      ctx = ctx || new (window.AudioContext || window.webkitAudioContext)();
-      var t = ctx.currentTime;
-      freqs.forEach(function(f, i){
-        var o = ctx.createOscillator(), g = ctx.createGain();
-        o.type = 'sine'; o.frequency.setValueAtTime(f, t + i*dur*0.6);
-        g.gain.setValueAtTime(0.0001, t + i*dur*0.6);
-        g.gain.exponentialRampToValueAtTime(vol, t + i*dur*0.6 + 0.012);
-        g.gain.exponentialRampToValueAtTime(0.0001, t + i*dur*0.6 + dur);
-        o.connect(g); g.connect(ctx.destination); o.start(t + i*dur*0.6); o.stop(t + i*dur*0.6 + dur + 0.02);
-      });
-    }catch(e){}
+  var ctx = null, bus = null;
+  // мягкий «стеклянный» тембр: основной тон + тихий обертон, фильтр и короткое эхо — звучит как маримба, а не писк
+  function audio(){
+    if(ctx) return ctx;
+    ctx = new (window.AudioContext || window.webkitAudioContext)();
+    var lp = ctx.createBiquadFilter(); lp.type = 'lowpass'; lp.frequency.value = 3200; lp.Q.value = 0.4;
+    var comp = ctx.createDynamicsCompressor(); comp.threshold.value = -24; comp.ratio.value = 3;
+    var dl = ctx.createDelay(); dl.delayTime.value = 0.13; var fb = ctx.createGain(); fb.gain.value = 0.22; var wet = ctx.createGain(); wet.gain.value = 0.18;
+    lp.connect(comp); lp.connect(dl); dl.connect(fb); fb.connect(dl); dl.connect(wet); wet.connect(comp);
+    comp.connect(ctx.destination); bus = lp; return ctx;
   }
-  window.fxSuccess = function(){ tone([523.25, 659.25, 783.99], 0.22, 0.05); };
+  function note(f, at, dur, vol){
+    var o = ctx.createOscillator(), o2 = ctx.createOscillator(), g = ctx.createGain(), g2 = ctx.createGain();
+    o.type = 'sine'; o2.type = 'sine';
+    o.frequency.setValueAtTime(f * 1.012, at); o.frequency.exponentialRampToValueAtTime(f, at + 0.04);
+    o2.frequency.setValueAtTime(f * 3.99, at);
+    g.gain.setValueAtTime(0.0001, at); g.gain.linearRampToValueAtTime(vol, at + 0.006); g.gain.exponentialRampToValueAtTime(0.0001, at + dur);
+    g2.gain.setValueAtTime(0.0001, at); g2.gain.linearRampToValueAtTime(vol * 0.18, at + 0.004); g2.gain.exponentialRampToValueAtTime(0.0001, at + dur * 0.35);
+    o.connect(g); o2.connect(g2); g.connect(bus); g2.connect(bus);
+    o.start(at); o2.start(at); o.stop(at + dur + 0.05); o2.stop(at + dur + 0.05);
+  }
+  function play(seq, gap, dur, vol){
+    if(!on) return;
+    try{ audio(); if(ctx.state === 'suspended') ctx.resume(); var t = ctx.currentTime + 0.01;
+      seq.forEach(function(f, i){ note(f, t + i * gap, dur, vol); }); }catch(e){}
+  }
+  // клики идут по пентатонике, поэтому несколько нажатий подряд складываются в мелодию, а не повторяют один писк
+  var scale = [587.33, 659.25, 783.99, 880, 987.77], step = 0;
+  window.fxSuccess = function(){ play([523.25, 659.25, 783.99, 1046.5], 0.09, 0.9, 0.06); };
   document.addEventListener('click', function(e){
     var b = e.target.closest('a.btn, button, .btn, .chip, .tab, [role=button]');
     if(!b || b.classList.contains('fx-sound')) return;
-    tone([880, 1320], 0.07, 0.03);
+    play([scale[step++ % scale.length]], 0, 0.32, 0.045);
   });
   document.addEventListener('submit', function(){ window.fxSuccess(); }, true);
   var t = document.createElement('button');
   t.className = 'fx-sound'; t.type = 'button';
   function label(){ t.textContent = on ? '♪ Звуки: вкл' : '♪ Звуки: выкл'; t.setAttribute('aria-pressed', on); }
   label();
-  t.addEventListener('click', function(){ on = !on; try{ localStorage.setItem('fx-sound', on ? 'on' : 'off'); }catch(e){} label(); if(on) tone([660, 990], 0.08, 0.035); });
+  t.addEventListener('click', function(){ on = !on; try{ localStorage.setItem('fx-sound', on ? 'on' : 'off'); }catch(e){} label(); if(on) play([659.25, 987.77], 0.07, 0.4, 0.045); });
   document.body.appendChild(t);
 })();
 </script>

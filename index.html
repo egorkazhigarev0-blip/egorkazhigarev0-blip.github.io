@@ -4,7 +4,15 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>Сайты для малого бизнеса</title>
-<meta name="description" content="Простые и красивые сайты для мастеров, кондитеров и мастерских. От 1 290 ₽, готово за 2–5 дней.">
+<meta name="description" content="Простые и красивые сайты для мастеров, кондитеров и мастерских. От 1 290 ₽, готово за 2–7 дней, без предоплаты.">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Сайты для малого бизнеса от 1 290 ₽">
+<meta property="og:description" content="Услуги с ценами, фото работ и заявки прямо в Telegram. Без предоплаты, черновик бесплатно.">
+<meta property="og:image" content="https://egorkazhigarev0-blip.github.io/img/og.jpg">
+<meta property="og:image:width" content="1200"><meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="theme-color" content="#0E7C6B">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='16' fill='%230E7C6B'/%3E%3Cpath d='M18 22h28M18 32h20M18 42h12' stroke='%23fff' stroke-width='6' stroke-linecap='round'/%3E%3Ccircle cx='46' cy='42' r='5' fill='%23E8B83A'/%3E%3C/svg%3E">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Unbounded:wght@600;700&family=Golos+Text:wght@400;500;600;700&display=swap">
@@ -53,7 +61,7 @@ section{padding-block:44px}
 .price{display:flex;align-items:baseline;gap:10px;flex-wrap:wrap;font-variant-numeric:tabular-nums}
 .price b{font-family:var(--display);font-size:26px}
 .price small{color:var(--muted)}
-.plan ul{margin:0;padding-left:18px;color:var(--muted);font-size:15px;display:grid;gap:4px;flex:1}
+.plan ul{margin:0;padding-left:18px;color:var(--muted);font-size:15px;display:grid;gap:4px;flex:1;align-content:start}
 .plan .btn{text-align:center}
 .inc{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px;margin-top:22px}
 .inc div{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:16px}
@@ -65,6 +73,7 @@ section{padding-block:44px}
 .steps b::before{counter-increment:s;content:counter(s) ". ";color:var(--accent)}
 .steps p{color:var(--muted);font-size:15px;margin-top:4px}
 details{border-bottom:1px solid var(--line);padding-block:14px;max-width:760px}
+#faq h2{margin-bottom:10px}
 summary{cursor:pointer;font-weight:600;font-size:17px}
 details p{color:var(--muted);margin-top:8px}
 .contact{background:var(--fg);color:var(--bg);border-radius:22px;padding:28px;display:flex;justify-content:space-between;align-items:center;gap:20px;flex-wrap:wrap}
@@ -72,6 +81,25 @@ details p{color:var(--muted);margin-top:8px}
 .contact p{opacity:.8;margin-top:6px}
 footer{padding-block:24px;color:var(--muted);font-size:14px}
 @media (max-width:860px){.plans{grid-template-columns:1fr}}
+.nav{display:flex;gap:20px;font-weight:600;font-size:15px}.nav a{color:var(--muted);text-decoration:none}.nav a:hover{color:var(--fg)}
+.hero{display:grid;grid-template-columns:1.15fr .85fr;gap:28px;align-items:center}
+.trust{list-style:none;padding:0;margin:22px 0 0;display:flex;flex-wrap:wrap;gap:8px 18px;font-weight:600;font-size:15px}
+.trust li{display:flex;align-items:center;gap:8px}.trust li::before{content:"";width:18px;height:18px;border-radius:50%;background:var(--accent) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20'%3E%3Cpath d='M5 10.5l3 3 7-7' stroke='%23fff' stroke-width='2.4' fill='none' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") center/14px no-repeat;flex:none}
+.stack{position:relative;aspect-ratio:1/1;max-width:440px;justify-self:center;width:100%}
+.stack img{position:absolute;width:78%;border-radius:16px;box-shadow:0 26px 50px -24px rgba(0,0,0,.45);border:1px solid var(--line);background:var(--surface)}
+.stack .s1{left:0;top:4%;transform:rotate(-7deg)}.stack .s2{right:0;top:18%;transform:rotate(6deg)}.stack .s3{left:11%;bottom:4%;transform:rotate(-1deg)}
+@media (prefers-reduced-motion:no-preference){.stack img{transition:transform .5s cubic-bezier(.2,.75,.2,1)}.stack:hover .s1{transform:rotate(-10deg) translate(-8px,-6px)}.stack:hover .s2{transform:rotate(9deg) translate(8px,-4px)}}
+.pick{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin-top:18px}.pick span{font-weight:700;margin-right:4px}
+.pick button{font:inherit;font-size:15px;font-weight:600;border:1px solid var(--line);background:var(--surface);color:var(--fg);border-radius:999px;padding:9px 14px;cursor:pointer}
+.pick button[aria-pressed=true]{background:var(--accent);color:var(--accent-ink);border-color:var(--accent)}
+.plan.lit{outline:3px solid var(--mark);outline-offset:3px}
+.usual{font-size:14px;color:var(--muted);margin-top:-4px}
+.mcta{display:none}
+@media (max-width:860px){.hero{grid-template-columns:1fr}.stack{max-width:340px}.nav{display:none}
+  .mcta{display:block;position:fixed;left:16px;right:16px;bottom:max(14px,env(safe-area-inset-bottom));z-index:40;text-align:center;box-shadow:0 12px 30px -10px rgba(0,0,0,.4);transition:transform .3s,opacity .3s}
+  .mcta.hide{transform:translateY(140%);opacity:0}
+  footer{padding-bottom:90px}}
+
 </style>
 <style>
 /* fx: плавные анимации (отключаются, если в системе включено «уменьшить движение») */
@@ -92,47 +120,62 @@ footer{padding-block:24px;color:var(--muted);font-size:14px}
 </head>
 <body>
 <header class="top"><div class="wrap">
-  <div class="logo">Сайты <span>за 5 дней</span></div>
-  <a class="btn ghost" href="#plans">Примеры</a>
+  <div class="logo">Сайты <span>под ключ</span></div>
+  <nav class="nav"><a href="#plans">Примеры</a><a href="#how">Как работаем</a><a href="#faq">Вопросы</a></nav>
+  <a class="btn ghost" href="#contact">Обсудить сайт</a>
 </div></header>
 
-<div class="wrap hero">
+<div class="wrap hero"><div class="hero-text">
   <h1>Сайт, через который вам <mark>пишут клиенты</mark></h1>
   <p>Делаю сайты для мастеров, кондитеров, мастерских и небольших магазинов. Услуги с ценами, фото работ и заявки прямо в Telegram или на почту.</p>
   <div class="cta"><a class="btn" href="#plans">Посмотреть примеры</a><a class="btn ghost" href="#how">Как я работаю</a></div>
-  <div class="offer">Первым клиентам цена ниже в обмен на отзыв. Черновик главной страницы покажу бесплатно</div>
+  <ul class="trust"><li>Без предоплаты</li><li>Черновик бесплатно</li><li>Первые правки бесплатно</li></ul>
+  <div class="offer">Первым клиентам цена ниже в обмен на отзыв</div>
+  </div>
+  <div class="stack fx-float" aria-hidden="true">
+    <img src="img/nogti.jpg" alt="" class="s1 nofloat"><img src="img/remont.jpg" alt="" class="s2 nofloat"><img src="img/tort.jpg" alt="" class="s3 nofloat">
+  </div>
 </div>
 
 <section id="plans"><div class="wrap">
   <h2>Примеры и цены</h2>
   <p class="sub">Нажмите на картинку, чтобы открыть пример. Все сайты работают на телефоне и компьютере.</p>
+  <div class="pick" role="group" aria-label="Подобрать вариант">
+    <span>Что вам нужно?</span>
+    <button type="button" data-plan="p1">Показать услуги и цены</button>
+    <button type="button" data-plan="p2">Принимать заказы с расчётом цены</button>
+    <button type="button" data-plan="p3">Онлайн-запись к мастерам</button>
+  </div>
   <div class="plans">
-    <article class="plan">
+    <article class="plan" id="p1">
       <a class="shot" href="remont/"><img src="img/remont.jpg" alt="Пример: сайт мастерской по ремонту обуви и часов" loading="lazy"></a>
       <div class="body">
         <span class="tag">Старт</span>
         <h3>Сайт-визитка</h3>
         <div class="price"><b>1 290 ₽</b><small>первым клиентам, потом 1 690 ₽</small></div>
+        <p class="usual">Обычно такие сайты стоят от 5 000 ₽</p>
         <ul><li>Одна страница</li><li>Услуги и цены</li><li>Часы работы и «открыто сейчас»</li><li>Вопрос мастеру с ответом в Telegram</li><li>Готово за 2–3 дня</li></ul>
         <a class="btn ghost" href="remont/">Открыть пример</a>
       </div>
     </article>
-    <article class="plan best">
+    <article class="plan best" id="p2">
       <a class="shot" href="tort/"><img src="img/tort.jpg" alt="Пример: сайт кондитерской с калькулятором цены торта" loading="lazy"></a>
       <div class="body">
         <span class="tag">Стандарт · чаще всего выбирают</span>
         <h3>Сайт с калькулятором</h3>
         <div class="price"><b>1 990 ₽</b><small>первым клиентам, потом 2 790 ₽</small></div>
+        <p class="usual">Обычно такие сайты стоят от 8 000 ₽</p>
         <ul><li>Каталог товаров или услуг</li><li>Калькулятор стоимости</li><li>Форма заказа с заявкой в Telegram</li><li>Ответы на частые вопросы</li><li>Плавные анимации</li><li>Готово за 3–4 дня</li></ul>
         <a class="btn" href="tort/">Открыть пример</a>
       </div>
     </article>
-    <article class="plan">
+    <article class="plan" id="p3">
       <a class="shot" href="nogti/"><img src="img/nogti.jpg" alt="Пример: сайт студии маникюра с онлайн-записью" loading="lazy"></a>
       <div class="body">
         <span class="tag">Премиум</span>
         <h3>Сайт с онлайн-записью</h3>
         <div class="price"><b>3 490 ₽</b><small>первым клиентам, потом 4 490 ₽</small></div>
+        <p class="usual">Обычно такие сайты стоят от 12 000 ₽</p>
         <ul><li>Запись: услуга, мастер, день и время</li><li>Галерея работ с фильтрами</li><li>Страница мастеров</li><li>Продуманный дизайн под ваш бренд</li><li>Анимации и звуки по желанию</li><li>Готово за 5–7 дней</li></ul>
         <a class="btn ghost" href="nogti/">Открыть пример</a>
       </div>
@@ -160,21 +203,25 @@ footer{padding-block:24px;color:var(--muted);font-size:14px}
   </div>
 </div></section>
 
-<section><div class="wrap">
+<section id="faq"><div class="wrap">
   <h2>Вопросы</h2>
   <details><summary>Нужно ли платить каждый месяц?</summary><p>Нет. Сайт размещается бесплатно. Платно только собственный адрес вроде vash-salon.ru, около 200–600 ₽ в год, и он по желанию.</p></details>
   <details><summary>Можно потом поменять цены?</summary><p>Да. Первые правки бесплатно, дальше мелкие правки стоят 200–300 ₽.</p></details>
   <details><summary>А анимации и звуки будут?</summary><p>Да, по желанию. Плавное появление блоков и лёгкие эффекты при наведении есть во всех примерах. Можно добавить и тихие приятные звуки при нажатии на кнопки, их посетитель может выключить. Откройте примеры выше и попробуйте.</p></details>
+  <details><summary>А если сайт не понравится?</summary><p>Тогда вы ничего не платите. Предоплаты нет: сначала показываю готовый сайт, вношу правки, и только когда всё нравится, вы оплачиваете.</p></details>
+  <details><summary>Что нужно от меня?</summary><p>Список услуг с ценами, 5–10 фото ваших работ, адрес и часы работы. Если хороших фото пока нет, подберу красивые фото по теме, а ваши добавим позже.</p></details>
+  <details><summary>Как клиенты найдут сайт?</summary><p>Ссылку на сайт можно поставить в карточку на Яндекс Картах и в 2ГИС, в группу ВК, в Instagram и на Авито. Помогу с этим, если нужно.</p></details>
   <details><summary>Чем это лучше группы ВКонтакте?</summary><p>Сайт находят в Яндексе и на картах, на нём сразу видны цены и работы, а записаться можно без переписки. Группу ВК лучше оставить и поставить в ней ссылку на сайт.</p></details>
 </div></section>
 
 <section id="contact"><div class="wrap">
   <div class="contact">
-    <div><h2>Обсудим ваш сайт?</h2><p>Просто ответьте на сообщение, в котором получили эту ссылку. Отвечаю в течение пары часов, черновик главной страницы бесплатно.</p></div>
+    <div><h2>Обсудим ваш сайт?</h2><p>Ответьте на сообщение, в котором получили эту ссылку. Если вы пришли с Авито, напишите мне в чат объявления. Отвечаю в течение пары часов, черновик главной страницы бесплатно.</p></div>
   </div>
 </div></section>
 
-<footer><div class="wrap">Примеры на этой странице сделаны для вымышленных бизнесов.</div></footer>
+<footer><div class="wrap">Примеры на этой странице сделаны для вымышленных бизнесов. Фото тортов в примере взяты с бесплатного фотостока (Pixabay).</div></footer>
+<a class="mcta btn" href="#contact">Обсудить сайт</a>
 
 <script>window.FX_NO_SOUND=true;
 /* fx: появление блоков при прокрутке, «парящая» иллюстрация и мягкие звуки нажатий (можно выключить кнопкой) */
@@ -187,42 +234,68 @@ footer{padding-block:24px;color:var(--muted);font-size:14px}
     els.forEach(function(e, i){ if(e.getBoundingClientRect().top > innerHeight*0.9){ e.classList.add('fx-rv'); e.style.transitionDelay = (i % 4) * 70 + 'ms'; io.observe(e); } });
   }
   document.querySelectorAll('.card, .plan, .tile, .item, .row').forEach(function(e){ e.classList.add('fx-lift'); });
-  var hero = document.querySelector('.hero svg, .hero img, .hero .art, .hero-art, header svg');
+  var hero = document.querySelector('.hero svg, .hero img:not(.nofloat), .hero .art, .hero-art, header svg');
   if(hero && !reduce) hero.classList.add('fx-float');
 
   if(window.FX_NO_SOUND) return;
-  // звуки: короткие и тихие, генерируются в браузере (без файлов)
+  // звуки: короткие, тихие и мягкие, генерируются в браузере (без файлов)
   var on = true; try{ on = localStorage.getItem('fx-sound') !== 'off'; }catch(e){}
-  var ctx = null;
-  function tone(freqs, dur, vol){
-    if(!on) return;
-    try{
-      ctx = ctx || new (window.AudioContext || window.webkitAudioContext)();
-      var t = ctx.currentTime;
-      freqs.forEach(function(f, i){
-        var o = ctx.createOscillator(), g = ctx.createGain();
-        o.type = 'sine'; o.frequency.setValueAtTime(f, t + i*dur*0.6);
-        g.gain.setValueAtTime(0.0001, t + i*dur*0.6);
-        g.gain.exponentialRampToValueAtTime(vol, t + i*dur*0.6 + 0.012);
-        g.gain.exponentialRampToValueAtTime(0.0001, t + i*dur*0.6 + dur);
-        o.connect(g); g.connect(ctx.destination); o.start(t + i*dur*0.6); o.stop(t + i*dur*0.6 + dur + 0.02);
-      });
-    }catch(e){}
+  var ctx = null, bus = null;
+  // мягкий «стеклянный» тембр: основной тон + тихий обертон, фильтр и короткое эхо — звучит как маримба, а не писк
+  function audio(){
+    if(ctx) return ctx;
+    ctx = new (window.AudioContext || window.webkitAudioContext)();
+    var lp = ctx.createBiquadFilter(); lp.type = 'lowpass'; lp.frequency.value = 3200; lp.Q.value = 0.4;
+    var comp = ctx.createDynamicsCompressor(); comp.threshold.value = -24; comp.ratio.value = 3;
+    var dl = ctx.createDelay(); dl.delayTime.value = 0.13; var fb = ctx.createGain(); fb.gain.value = 0.22; var wet = ctx.createGain(); wet.gain.value = 0.18;
+    lp.connect(comp); lp.connect(dl); dl.connect(fb); fb.connect(dl); dl.connect(wet); wet.connect(comp);
+    comp.connect(ctx.destination); bus = lp; return ctx;
   }
-  window.fxSuccess = function(){ tone([523.25, 659.25, 783.99], 0.22, 0.05); };
+  function note(f, at, dur, vol){
+    var o = ctx.createOscillator(), o2 = ctx.createOscillator(), g = ctx.createGain(), g2 = ctx.createGain();
+    o.type = 'sine'; o2.type = 'sine';
+    o.frequency.setValueAtTime(f * 1.012, at); o.frequency.exponentialRampToValueAtTime(f, at + 0.04);
+    o2.frequency.setValueAtTime(f * 3.99, at);
+    g.gain.setValueAtTime(0.0001, at); g.gain.linearRampToValueAtTime(vol, at + 0.006); g.gain.exponentialRampToValueAtTime(0.0001, at + dur);
+    g2.gain.setValueAtTime(0.0001, at); g2.gain.linearRampToValueAtTime(vol * 0.18, at + 0.004); g2.gain.exponentialRampToValueAtTime(0.0001, at + dur * 0.35);
+    o.connect(g); o2.connect(g2); g.connect(bus); g2.connect(bus);
+    o.start(at); o2.start(at); o.stop(at + dur + 0.05); o2.stop(at + dur + 0.05);
+  }
+  function play(seq, gap, dur, vol){
+    if(!on) return;
+    try{ audio(); if(ctx.state === 'suspended') ctx.resume(); var t = ctx.currentTime + 0.01;
+      seq.forEach(function(f, i){ note(f, t + i * gap, dur, vol); }); }catch(e){}
+  }
+  // клики идут по пентатонике, поэтому несколько нажатий подряд складываются в мелодию, а не повторяют один писк
+  var scale = [587.33, 659.25, 783.99, 880, 987.77], step = 0;
+  window.fxSuccess = function(){ play([523.25, 659.25, 783.99, 1046.5], 0.09, 0.9, 0.06); };
   document.addEventListener('click', function(e){
     var b = e.target.closest('a.btn, button, .btn, .chip, .tab, [role=button]');
     if(!b || b.classList.contains('fx-sound')) return;
-    tone([880, 1320], 0.07, 0.03);
+    play([scale[step++ % scale.length]], 0, 0.32, 0.045);
   });
   document.addEventListener('submit', function(){ window.fxSuccess(); }, true);
   var t = document.createElement('button');
   t.className = 'fx-sound'; t.type = 'button';
   function label(){ t.textContent = on ? '♪ Звуки: вкл' : '♪ Звуки: выкл'; t.setAttribute('aria-pressed', on); }
   label();
-  t.addEventListener('click', function(){ on = !on; try{ localStorage.setItem('fx-sound', on ? 'on' : 'off'); }catch(e){} label(); if(on) tone([660, 990], 0.08, 0.035); });
+  t.addEventListener('click', function(){ on = !on; try{ localStorage.setItem('fx-sound', on ? 'on' : 'off'); }catch(e){} label(); if(on) play([659.25, 987.77], 0.07, 0.4, 0.045); });
   document.body.appendChild(t);
 })();
+</script>
+<script>
+// подбор варианта: подсвечиваем подходящий пример и плавно прокручиваем к нему
+document.querySelectorAll('.pick button').forEach(function(b){
+  b.addEventListener('click', function(){
+    document.querySelectorAll('.pick button').forEach(function(x){ x.setAttribute('aria-pressed', x===b); });
+    document.querySelectorAll('.plan').forEach(function(p){ p.classList.toggle('lit', p.id===b.dataset.plan); });
+    var el = document.getElementById(b.dataset.plan);
+    if(el && innerWidth < 860) el.scrollIntoView({behavior:'smooth', block:'start'});
+  });
+});
+// кнопка «Обсудить сайт» внизу экрана на телефоне прячется, когда блок контактов уже виден
+(function(){ var m=document.querySelector('.mcta'), c=document.getElementById('contact');
+  if(m && c && 'IntersectionObserver' in window){ new IntersectionObserver(function(es){ m.classList.toggle('hide', es[0].isIntersecting); }).observe(c); } })();
 </script>
 </body>
 </html>
