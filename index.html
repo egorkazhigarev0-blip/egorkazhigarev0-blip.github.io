@@ -80,6 +80,10 @@ details p{color:var(--muted);margin-top:8px}
 .contact h2{color:var(--bg)}
 .contact p{opacity:.8;margin-top:6px}
 footer{padding-block:24px;color:var(--muted);font-size:14px}
+.more{display:flex;flex-wrap:wrap;gap:8px 10px;align-items:center;margin-top:20px;font-size:15px}
+.more span{opacity:.7;margin-right:4px}
+.more a{padding:8px 14px;border:1px solid var(--line);border-radius:999px;text-decoration:none;color:inherit;background:var(--surface)}
+.more a:hover{border-color:currentColor}
 @media (max-width:860px){.plans{grid-template-columns:1fr}}
 .nav{display:flex;gap:20px;font-weight:600;font-size:15px}.nav a{color:var(--muted);text-decoration:none}.nav a:hover{color:var(--fg)}
 .hero{display:grid;grid-template-columns:1.15fr .85fr;gap:28px;align-items:center}
@@ -133,7 +137,7 @@ footer{padding-block:24px;color:var(--muted);font-size:14px}
   <div class="offer">Первым клиентам цена ниже в обмен на отзыв</div>
   </div>
   <div class="stack fx-float" aria-hidden="true">
-    <img src="img/nogti.jpg" alt="" class="s1 nofloat"><img src="img/remont.jpg" alt="" class="s2 nofloat"><img src="img/tort.jpg" alt="" class="s3 nofloat">
+    <img src="img/chelka.jpg" alt="" class="s1 nofloat"><img src="img/remont.jpg" alt="" class="s2 nofloat"><img src="img/tort.jpg" alt="" class="s3 nofloat">
   </div>
 </div>
 
@@ -170,16 +174,20 @@ footer{padding-block:24px;color:var(--muted);font-size:14px}
       </div>
     </article>
     <article class="plan" id="p3">
-      <a class="shot" href="nogti/"><img src="img/nogti.jpg" alt="Пример: сайт студии маникюра с онлайн-записью" loading="lazy"></a>
+      <a class="shot" href="chelka/"><img src="img/chelka.jpg" alt="Пример: сайт груминг-студии с калькулятором и онлайн-записью" loading="lazy"></a>
       <div class="body">
         <span class="tag">Премиум</span>
         <h3>Сайт с онлайн-записью</h3>
         <div class="price"><b>3 490 ₽</b><small>первым клиентам, потом 4 490 ₽</small></div>
         <p class="usual">Обычно такие сайты стоят от 12 000 ₽</p>
-        <ul><li>Запись: услуга, мастер, день и время</li><li>Галерея работ с фильтрами</li><li>Страница мастеров</li><li>Продуманный дизайн под ваш бренд</li><li>Анимации и звуки по желанию</li><li>Готово за 5–7 дней</li></ul>
-        <a class="btn ghost" href="nogti/">Открыть пример</a>
+        <ul><li>Запись: услуга, день и время</li><li>Калькулятор цены</li><li>Галерея работ</li><li>Продуманный дизайн под ваш бренд</li><li>Анимации и звуки по желанию</li><li>Готово за 5–7 дней</li></ul>
+        <a class="btn ghost" href="chelka/">Открыть пример</a>
       </div>
     </article>
+  </div>
+  <div class="more">
+    <span>Все примеры:</span>
+    <a href="chelka/">Груминг-студия</a><a href="tort/">Кондитерская</a><a href="nogti/">Студия маникюра</a><a href="remont/">Мастерская</a>
   </div>
 </div></section>
 
