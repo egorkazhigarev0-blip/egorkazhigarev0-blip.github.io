@@ -39,7 +39,8 @@ def niche_of(l):
 
 # какой экран показывать во втором касании
 MODE = {**{k: "book" for k in ["nails", "brows", "salon", "tan", "massage", "pets", "kids", "fitness", "barber", "auto", "photo", "tattoo"]},
-        **{k: "order" for k in ["cake", "bakery", "coffee", "flowers", "cleaning"]},
+        **{k: "book" for k in ["tourism", "tours", "sauna"]},
+        **{k: "order" for k in ["cake", "bakery", "coffee", "flowers", "cleaning", "food", "handmade"]},
         **{k: "ask" for k in ["watch", "shoe", "phone", "keys", "tailor", "renovation", "furniture", "other"]}}
 PHOTO_KEY = {"tan": "salon", "kids": "kids", "other": None}
 
